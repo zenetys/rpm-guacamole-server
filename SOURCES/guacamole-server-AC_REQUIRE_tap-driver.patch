@@ -1,0 +1,11 @@
+--- guacamole-server-1.1.0/configure.ac.ori	2020-01-22 21:23:38.000000000 +0000
++++ guacamole-server-1.1.0/configure.ac	2020-04-05 19:17:33.866576298 +0000
+@@ -30,7 +30,7 @@
+ AC_CONFIG_MACRO_DIR([m4])
+ 
+ # Use TAP test driver for tests (part of automake)
+-AC_REQUIRE_AUX_FILE([tap-driver.sh])
++#AC_REQUIRE_AUX_FILE([tap-driver.sh])
+ 
+ # Programs
+ AC_PROG_CC
