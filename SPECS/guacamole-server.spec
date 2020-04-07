@@ -20,14 +20,17 @@
 
 %define libjpeg_version     1.5.3
 %define libjpeg             libjpeg-turbo-%{libjpeg_version}
+
+%define libvnc_version      0.9.11
+%define libvnc              libvncserver-LibVNCServer-%{libvnc_version}
 %endif
 
 %define ffmpeg_version      4.2.3
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
-Name:           guacamole-server11z
-Version:        1.1.0
-Release:        9%{?dist}.zenetys
+Name:           guacamole-server12z
+Version:        1.2.0
+Release:        1%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -72,6 +75,19 @@ Patch355:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943
 Patch356:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CET.patch#/libjpeg-turbo-CET.patch
 Patch357:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CVE-2018-14498.patch#/libjpeg-turbo-CVE-2018-14498.patch
 Patch399:       libjpeg-turbo-freerdp-winpr-type-redef.patch
+
+Source400:      https://github.com/LibVNC/libvncserver/archive/LibVNCServer-%{libvnc_version}.tar.gz
+Patch400:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0040-Ensure-compatibility-with-gtk-vnc-0.7.0.patch#/libvncserver-Ensure-compatibility-with-gtk-vnc-0.7.0.patch
+Patch401:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0001-libvncserver-Add-API-to-add-custom-I-O-entry-points.patch#/libvncserver-Add-API-to-add-custom-I-O-entry-points.patch
+Patch402:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0002-libvncserver-Add-channel-security-handlers.patch#/libvncserver-Add-channel-security-handlers.patch
+Patch403:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0001-auth-Add-API-to-unregister-built-in-security-handler.patch#/libvncserver-auth-Add-API-to-unregister-built-in-security-handler.patch
+Patch404:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-system_minilzo.patch#/libvncserver-system_minilzo.patch
+Patch405:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.1-multilib.patch#/libvncserver-multilib.patch
+Patch406:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/LibVNCServer-0.9.10-system-crypto-policy.patch#/libvncserver-system-crypto-policy.patch
+Patch407:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Validate-client-cut-text-length.patch#/libvncserver-Validate-client-cut-text-length.patch
+Patch408:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Limit-client-cut-text-length-to-1-MB.patch#/libvncserver-Limit-client-cut-text-length-to-1-MB.patch
+Patch409:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch#/libvncserver-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch
+Patch410:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-libvncclient-cursor-limit-width-height-input-values.patch#/libvncserver-cursor-limit-width-height-input-values.patch
 %endif
 
 BuildRequires:  autoconf
@@ -101,6 +117,7 @@ BuildRequires:  libjpeg-devel
 BuildRequires:  systemd-devel
 BuildRequires:  pkgconfig(freerdp2)
 BuildRequires:  pkgconfig(freerdp-client2)
+BuildRequires:  pkgconfig(libvncserver)
 BuildRequires:  pkgconfig(winpr2)
 %endif
 
@@ -117,15 +134,14 @@ BuildRequires:  gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel
 BuildRequires:  gcc-c++
 BuildRequires:  gsm-devel
+BuildRequires:  lzo-devel
 BuildRequires:  pkgconfig(libpcsclite)
 %endif
 
 %if 0%{?rhel} <= 6
 BuildRequires:  gnutls-devel
-BuildRequires:  libvncserver-devel
 %else
 BuildRequires:  pkgconfig(gnutls)
-BuildRequires:  pkgconfig(libvncserver)
 %endif
 
 Requires(pre):  shadow-utils
@@ -235,6 +251,20 @@ cd %{libjpeg}
 %patch355 -p1 -b .coverity
 %patch356 -p1 -b .CET
 %patch357 -p1 -b .CVE-2018-14498
+# libvnc
+%setup -T -D -a 400 -n guacamole-server-%{version}
+cd %{libvnc}
+%patch400 -p1
+%patch401 -p1
+%patch402 -p1
+%patch403 -p1
+%patch404 -p1
+%patch405 -p1
+%patch406 -p1
+%patch407 -p1
+%patch408 -p1
+%patch409 -p1
+%patch410 -p1
 cd ..
 %endif
 
@@ -263,6 +293,7 @@ export PKG_CONFIG_PATH
 guac_extra_cflags=
 guac_extra_ldflags=
 guac_extra_pkgconfig_path=
+guac_extra_libs=
 
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
 # libtelnet
@@ -327,8 +358,11 @@ autoreconf -vif
 )
 %make_build
 make install
-guac_extra_cflags+=" -I$PWD/install/include"
-guac_extra_ldflags+=" -L$PWD/install/lib"
+libjpeg_cflags="-I$PWD/install/include"
+libjpeg_ldflags="-L$PWD/install/lib"
+guac_extra_cflags+=" $libjpeg_cflags"
+guac_extra_ldflags+=" $libjpeg_ldflags"
+guac_extra_libs+=" -ljpeg"
 cd ..
 
 # freerdp
@@ -386,12 +420,34 @@ for l in $PWD/install/usr/%{_lib}/freerdp2/*.a; do
     guac_extra_ldflags+=" -l$l"
 done
 cd ..
+
+# libvnc
+cd %{libvnc}
+autoreconf -vif
+(
+    CFLAGS+=" $libjpeg_cflags"
+    LDFLAGS+=" $libjpeg_ldflags"
+    export JPEG_LDFLAGS="-ljpeg"
+    ./configure \
+        --prefix=$PWD/install \
+        --enable-static \
+        --disable-shared \
+        --with-gcrypt \
+        --with-png
+)
+%make_build
+make install
+guac_extra_cflags+=" -I$PWD/install/include"
+guac_extra_ldflags+=" -L$PWD/install/lib -lgnutls"
+guac_extra_libs+=" -lminilzo"
+cd ..
 %endif
 
 # guacamole-server
 CFLAGS+=" $guac_extra_cflags"
 LDFLAGS+=" $guac_extra_ldflags"
 PKG_CONFIG_PATH+="$guac_extra_pkgconfig_path"
+export LIBS="$guac_extra_libs"
 
 autoreconf -vif
 %configure \
