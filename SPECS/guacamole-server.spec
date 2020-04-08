@@ -34,7 +34,7 @@
 
 Name:           guacamole-server11z
 Version:        1.1.0
-Release:        1%{?dist}.zenetys
+Release:        2%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -273,7 +273,7 @@ cd %{libssh2}
 %configure --enable-static --disable-shared
 %make_build
 guac_extra_cflags+=" -I$PWD/include"
-guac_extra_ldflags+=" -L$PWD/src/.libs -lcrypto -lz"
+guac_extra_ldflags+=" -L$PWD/src/.libs -lcrypto -lz -lssh2"
 cd ..
 %endif
 
