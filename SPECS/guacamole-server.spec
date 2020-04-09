@@ -34,7 +34,7 @@
 
 Name:           guacamole-server11z
 Version:        1.1.0
-Release:        3%{?dist}.zenetys
+Release:        4%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -465,6 +465,7 @@ install -p -m 644 -D %{SOURCE2} %{buildroot}%{_unitdir}/guacd.service
 %else
 install -p -m 755 -D %{SOURCE3} %{buildroot}%{_initrddir}/guacd
 patch -p0 %{buildroot}%{_initrddir}/guacd %{PATCH2}
+mkdir -p %{buildroot}%{_var}/run/guacd
 %endif
 
 %if 0%{?rhel} == 7
@@ -546,6 +547,7 @@ fi
 %{_unitdir}/guacd.service
 %else
 %{_initrddir}/guacd
+%attr(755,%{username},%{username}) %{_var}/run/guacd
 %endif
 %attr(750,%{username},%{username}) %{_sharedstatedir}/guacd
 
