@@ -27,14 +27,12 @@
 %define libjpeg             libjpeg-turbo-%{libjpeg_version}
 %endif
 
-%define libx264_version     master-1771b556ee45207f8711744ccbd5d42a3949b14c
 %define ffmpeg_version      4.2.2
-%define libx264             x264-%{libx264_version}
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
 Name:           guacamole-server11z
 Version:        1.1.0
-Release:        5%{?dist}.zenetys
+Release:        6%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -64,7 +62,6 @@ Source200:      https://www.nasm.us/pub/nasm/releasebuilds/%{nasm_version}/%{nas
 Patch201:       https://git.centos.org/rpms/nasm/raw/2c880c9d584254e6fff2d6acabae431d17dac16b/f/SOURCES/0001-Remove-invalid-pure_func-qualifiers.patch#/nasm-Remove-invalid-pure_func-qualifiers.patch
 %endif
 
-Source230:      https://code.videolan.org/videolan/x264/-/archive/master/%{libx264}.tar.gz
 Source260:      https://ffmpeg.org/releases/%{ffmpeg}.tar.bz2
 Patch261:       https://pkgs.rpmfusion.org/cgit/free/ffmpeg.git/plain/fix_ppc_build.patch?h=el8&id=4604cc7aed7b3fa49f50a7f7cdf35814d17c988e#/ffmpeg-fix_ppc_build.patch
 
@@ -226,8 +223,6 @@ cd %{nasm}
 cd ..
 %endif
 
-# x264
-%setup -T -D -a 230 -n guacamole-server-%{version}
 # ffmpeg
 %setup -T -D -a 260 -n guacamole-server-%{version}
 cd %{ffmpeg}
@@ -307,53 +302,26 @@ AS="$PWD/nasm"
 cd ..
 %endif
 
-# libx264
-cd %{libx264}
-./configure \
-    --disable-avs \
-    --disable-cli \
-    --disable-ffms \
-    --disable-gpac \
-    --disable-gpl \
-    --disable-lavf \
-    --disable-lsmash \
-    --disable-opencl \
-    --disable-swscale \
-    --enable-pic \
-    --enable-static
-%make_build
-libx264_cflags="-I$PWD"
-libx264_ldflags="-L$PWD -lpthread"
-guac_extra_ldflags+=" $libx264_ldflags"
-cd ..
-
 # ffmpeg
 cd %{ffmpeg}
 ./configure \
     --prefix=$PWD/build \
     --arch='%{_target_cpu}' \
     --disable-all \
-    --enable-ffmpeg \
     --enable-avcodec \
-    --enable-avformat \
     --enable-avfilter \
-    --enable-decoder=h264 \
-    --enable-demuxer=mov \
-    --enable-encoder=rawvideo,libx264 \
-    --enable-gpl \
+    --enable-avformat \
+    --enable-encoder=rawvideo,mpeg4 \
+    --enable-ffmpeg \
     --enable-filter=scale \
-    --enable-libx264 \
-    --enable-muxer=rawvideo,mp4 \
-    --enable-parser=h264 \
+    --enable-gpl \
+    --enable-muxer=rawvideo,mov,mp4 \
     --enable-pic \
     --enable-protocol=file \
     --enable-small \
     --enable-static \
     --enable-swresample \
     --enable-swscale \
-    --extra-cflags="$libx264_cflags" \
-    --extra-cxxflags="$libx264_cflags" \
-    --extra-ldflags="$libx264_ldflags" \
     --x86asmexe="$AS"
 %make_build
 make install
