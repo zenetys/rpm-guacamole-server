@@ -34,7 +34,7 @@
 
 Name:           guacamole-server11z
 Version:        1.1.0
-Release:        4%{?dist}.zenetys
+Release:        5%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -429,6 +429,12 @@ cd ..
 objcopy --localize-symbol=RSA_get0_key "$PWD/install/usr/%{_lib}/libfreerdp2.a"
 export RDP_CFLAGS="-I$PWD/install/usr/include/freerdp2 -I$PWD/install/usr/include/winpr2"
 export RDP_LIBS="-L$PWD/install/usr/%{_lib}"
+guac_extra_ldflags+=" -L$PWD/install/usr/%{_lib} -L$PWD/install/usr/%{_lib}/freerdp2"
+guac_extra_ldflags+=" -lrt -lfreerdp-client2 -lfreerdp2 -lwinpr2"
+for l in $PWD/install/usr/%{_lib}/freerdp2/*.a; do
+    l=${l##*/}; l=${l#lib}; l=${l%.a}
+    guac_extra_ldflags+=" -l$l"
+done
 cd ..
 %endif
 
