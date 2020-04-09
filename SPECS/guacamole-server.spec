@@ -34,7 +34,7 @@
 
 Name:           guacamole-server11z
 Version:        1.1.0
-Release:        2%{?dist}.zenetys
+Release:        3%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -152,15 +152,25 @@ Requires(preun):   /sbin/service
 Requires(postun):  /sbin/service
 %endif
 
-Provides:       guacd%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       guacd
+Provides:       libguac
 %if 0%{?rhel} == 7
-Provides:       libguac-client-kubernetes%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       libguac-client-kubernetes
 %endif
-Provides:       libguac-client-rdp%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:       libguac-client-ssh%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:       libguac-client-telnet%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:       libguac-client-vnc%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       libguac-client-rdp
+Provides:       libguac-client-ssh
+Provides:       libguac-client-telnet
+Provides:       libguac-client-vnc
+
+Obsoletes:      guacd
+Obsoletes:      libguac
+%if 0%{?rhel} == 7
+Obsoletes:      libguac-client-kubernetes
+%endif
+Obsoletes:      libguac-client-rdp
+Obsoletes:      libguac-client-ssh
+Obsoletes:      libguac-client-telnet
+Obsoletes:      libguac-client-vnc
 
 %description
 Guacamole is an HTML5 remote desktop gateway.
