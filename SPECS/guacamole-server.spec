@@ -32,7 +32,7 @@
 
 Name:           guacamole-server11z
 Version:        1.1.0
-Release:        6%{?dist}.zenetys
+Release:        7%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -148,6 +148,8 @@ Requires(preun):   /sbin/chkconfig
 Requires(preun):   /sbin/service
 Requires(postun):  /sbin/service
 %endif
+
+Requires:       dejavu-sans-mono-fonts
 
 Provides:       guacd
 Provides:       libguac
