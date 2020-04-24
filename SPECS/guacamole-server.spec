@@ -32,10 +32,9 @@
 %define libx264             x264-%{libx264_version}
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
-Name:           guacamole-server
+Name:           guacamole-server11z
 Version:        1.1.0
-Release:        1%{?dist}
-Epoch:          1
+Release:        1%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -47,6 +46,7 @@ Source2:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c
 %else
 Source3:        https://src.fedoraproject.org/rpms/guacamole-server/raw/889f0f740e44ba6727e0db8b37bb2404fcbbe8ce/f/guacamole-server.init
 Patch1:         guacamole-server-AC_REQUIRE_tap-driver.patch
+Patch2:         guacamole-server-init.patch
 %endif
 
 %if 0%{?rhel} >= 8
@@ -137,6 +137,29 @@ BuildRequires:  pkgconfig(gnutls)
 BuildRequires:  pkgconfig(libvncserver)
 %endif
 
+Requires(pre):  shadow-utils
+
+%if 0%{?rhel} >= 7
+Requires(post):    systemd
+Requires(preun):   systemd
+Requires(postun):  systemd
+%else
+Requires(post):    /sbin/chkconfig
+Requires(preun):   /sbin/chkconfig
+Requires(preun):   /sbin/service
+Requires(postun):  /sbin/service
+%endif
+
+Provides:       guacd%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+%if 0%{?rhel} == 7
+Provides:       libguac-client-kubernetes%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+%endif
+Provides:       libguac-client-rdp%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       libguac-client-ssh%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       libguac-client-telnet%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       libguac-client-vnc%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+
 %description
 Guacamole is an HTML5 remote desktop gateway.
 
@@ -149,97 +172,25 @@ client requires nothing more than a web browser supporting HTML5 and AJAX.
 
 The main web application is provided by the "guacamole-client" package.
 
-%package -n libguac
-Summary:        The common library used by all C components of Guacamole
-
-%description -n libguac
-libguac is the core library for guacd (the Guacamole proxy) and any protocol
-support plugins for guacd. libguac provides efficient buffered I/O of text and
-base64 data, as well as somewhat abstracted functions for sending Guacamole
-instructions.
-
-%package -n libguac-devel
-Summary:        Development files for %{name}
+%package -n %{name}-devel
+Summary:        Development files for guacamole-server
 Requires:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       libguac-devel%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
 
-%description -n libguac-devel
+%description -n %{name}-devel
 The libguac-devel package contains libraries and header files for
-developing applications that use %{name}.
-
-%if 0%{?rhel} == 7
-%package -n libguac-client-kubernetes
-Summary:        Kubernetes pods terminal support for guacd
-Requires:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-
-%description -n libguac-client-kubernetes
-libguac-client-kubernetes is a protocol support plugin for the Guacamole proxy
-(guacd) which provides support for attaching to terminals of containers running
-in Kubernetes pods.
-%endif
-
-%package -n libguac-client-rdp
-Summary:        RDP support for guacd
-Requires:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-
-%description -n libguac-client-rdp
-libguac-client-rdp is a protocol support plugin for the Guacamole proxy (guacd)
-which provides support for RDP, the proprietary remote desktop protocol used by
-Windows Remote Deskop / Terminal Services, via the libfreerdp library.
-
-%package -n libguac-client-ssh
-Requires:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Summary:        SSH support for guacd
-
-%description -n libguac-client-ssh
-libguac-client-ssh is a protocol support plugin for the Guacamole proxy (guacd)
-which provides support for SSH, the secure shell.
-
-%package -n libguac-client-vnc
-Requires:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Summary:        VNC support for guacd
-
-%description -n libguac-client-vnc
-libguac-client-vnc is a protocol support plugin for the Guacamole proxy (guacd)
-which provides support for VNC via the libvncclient library (part of
-libvncserver).
-
-%package -n libguac-client-telnet
-Requires:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Summary:        Telnet support for guacd
-
-%description -n libguac-client-telnet
-libguac-client-telnet is a protocol support plugin for the Guacamole proxy
-(guacd) which provides support for Telnet via the libtelnet library.
-
-%package -n guacd
-Summary:        Proxy daemon for Guacamole
-Requires(pre):  shadow-utils
-Requires:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-%if 0%{?rhel} >= 7
-Requires(post):    systemd
-Requires(preun):   systemd
-Requires(postun):  systemd
-%else
-Requires(post):    /sbin/chkconfig
-Requires(preun):   /sbin/chkconfig
-Requires(preun):   /sbin/service
-Requires(postun):  /sbin/service
-%endif
-
-%description -n guacd
-guacd is the Guacamole proxy daemon used by the Guacamole web application and
-framework to translate between arbitrary protocols and the Guacamole protocol.
+developing applications that use guacamole-server
 
 %prep
 # guacamole-server
-%setup -q -n %{name}-%{version}
+%setup -n guacamole-server-%{version}
 %if 0%{?rhel} <= 6
 %patch1 -p1
 %endif
 
 %if 0%{?rhel} >= 8
 # libssh2
-%setup -T -D -a 100 -n %{name}-%{version}
+%setup -T -D -a 100 -n guacamole-server-%{version}
 cd %{libssh2}
 %patch100 -p1
 cd ..
@@ -247,7 +198,7 @@ cd ..
 
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
 # libtelnet
-%setup -T -D -a 150 -n %{name}-%{version}
+%setup -T -D -a 150 -n guacamole-server-%{version}
 %if 0%{?rhel} >= 8
 cd %{libtelnet}
 %patch150 -p1
@@ -257,25 +208,25 @@ cd ..
 
 %if 0%{?rhel} <= 7
 # nasm
-%setup -T -D -a 200 -n %{name}-%{version}
+%setup -T -D -a 200 -n guacamole-server-%{version}
 cd %{nasm}
 %patch201 -p1
 cd ..
 %endif
 
 # x264
-%setup -T -D -a 230 -n %{name}-%{version}
+%setup -T -D -a 230 -n guacamole-server-%{version}
 # ffmpeg
-%setup -T -D -a 260 -n %{name}-%{version}
+%setup -T -D -a 260 -n guacamole-server-%{version}
 cd %{ffmpeg}
 %patch261 -p1
 cd ..
 
 %if 0%{?rhel} <= 6
 # freerdp
-%setup -T -D -a 320 -n %{name}-%{version}
+%setup -T -D -a 320 -n guacamole-server-%{version}
 # libjpeg
-%setup -T -D -a 350 -n %{name}-%{version}
+%setup -T -D -a 350 -n guacamole-server-%{version}
 cd %{libjpeg}
 %patch350 -p1 -b .noinst
 %patch351 -p1 -b .header-files
@@ -408,7 +359,7 @@ autoreconf -vif
     # NASM object files are missing GNU Property note for Intel CET,
     # force it on the resulting library
     %ifarch %{ix86} x86_64
-    export LDFLAGS="$base_ldflags -Wl,-z,ibt -Wl,-z,shstk"
+    export LDFLAGS+=" -Wl,-z,ibt -Wl,-z,shstk"
     %endif
     ./configure --prefix=$PWD/install --enable-static --disable-shared
 )
@@ -501,6 +452,7 @@ mkdir -p %{buildroot}%{_unitdir}
 install -p -m 644 -D %{SOURCE2} %{buildroot}%{_unitdir}/guacd.service
 %else
 install -p -m 755 -D %{SOURCE3} %{buildroot}%{_initrddir}/guacd
+patch -p0 %{buildroot}%{_initrddir}/guacd %{PATCH2}
 %endif
 
 %if 0%{?rhel} == 7
@@ -512,84 +464,62 @@ install -p -m 755 -D %{SOURCE3} %{buildroot}%{_initrddir}/guacd
 chmod 644 %{buildroot}%{_bindir}/guacenc
 %endif
 
-%pre -n guacd
+%pre
 getent group %username >/dev/null || groupadd -r %username &>/dev/null || :
 getent passwd %username >/dev/null || useradd -r -s /sbin/nologin \
     -d %{_sharedstatedir}/guacd -M -c 'Guacamole proxy daemon' -g %username %username &>/dev/null || :
 exit 0
 
 %if 0%{?rhel} >= 7
-%post -n guacd
+%post
+/sbin/ldconfig
 %systemd_post guacd.service
-%preun -n guacd
+%preun
 %systemd_preun guacd.service
-%postun -n guacd
+%postun
+/sbin/ldconfig
 %systemd_postun_with_restart guacd.service
 %else
-%post -n guacd
+%post
+/sbin/ldconfig
 /sbin/chkconfig --add guacd
-%preun -n guacd
+%preun
 if [ "$1" = 0 ]; then
     /sbin/service guacd stop >/dev/null 2>&1 || :
     /sbin/chkconfig --del guacd
 fi
-%postun -n guacd
+%postun
+/sbin/ldconfig
 if [ "$1" -ge "1" ]; then
     /sbin/service guacd condrestart >/dev/null 2>&1 || :
 fi
 %endif
 
-%ldconfig_scriptlets -n libguac
-%if 0%{?rhel} == 7
-%ldconfig_scriptlets -n libguac-client-kubernetes
-%endif
-%ldconfig_scriptlets -n libguac-client-rdp
-%ldconfig_scriptlets -n libguac-client-ssh
-%ldconfig_scriptlets -n libguac-client-vnc
-%ldconfig_scriptlets -n libguac-client-telnet
-
-%files -n libguac
+%files
 %if 0%{?rhel} >= 7
 %license LICENSE
 %else
 %doc LICENSE
 %endif
 %doc README CONTRIBUTING
+%config(noreplace) %{_sysconfdir}/sysconfig/guacd
 %{_libdir}/libguac.so.*
-
-%files -n libguac-devel
-%doc html
-%{_includedir}/*
-%{_libdir}/libguac.so
 
 # The libguac source code dlopen's these plugins, and they are named without
 # the version in the shared object; i.e. "libguac-client-$(PROTOCOL).so".
-
 %if 0%{?rhel} == 7
-%files -n libguac-client-kubernetes
 %{_libdir}/libguac-client-kubernetes.so
 %{_libdir}/libguac-client-kubernetes.so.*
 %endif
-
-%files -n libguac-client-rdp
 %{_libdir}/libguac-client-rdp.so
 %{_libdir}/libguac-client-rdp.so.*
 %{_libdir}/freerdp2/*.so
-
-%files -n libguac-client-ssh
 %{_libdir}/libguac-client-ssh.so
 %{_libdir}/libguac-client-ssh.so.*
-
-%files -n libguac-client-vnc
-%{_libdir}/libguac-client-vnc.so
-%{_libdir}/libguac-client-vnc.so.*
-
-%files -n libguac-client-telnet
 %{_libdir}/libguac-client-telnet.so
 %{_libdir}/libguac-client-telnet.so.*
-
-%files -n guacd
-%config(noreplace) %{_sysconfdir}/sysconfig/guacd
+%{_libdir}/libguac-client-vnc.so
+%{_libdir}/libguac-client-vnc.so.*
 
 # attr set here, see note about el7 at the end of the install section
 %attr(755,-,-) %{_bindir}/guacenc
