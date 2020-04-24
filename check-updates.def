@@ -3,5 +3,4 @@ freerdp 2.0.0-46.rc4 lynx https://git.centos.org/rpms/freerdp/releases .*/c8/fre
 guacamole-server 1.1.0 json https://api.github.com/repos/apache/guacamole-server/tags =([0-9.]+)
 libjpeg-turbo 1.5.3-10 lynx https://git.centos.org/rpms/libjpeg-turbo/releases .*/c8/libjpeg-turbo-(.+)\.[^.]+
 libtelnet 0.21-5 lynx https://dl.fedoraproject.org/pub/epel/7/SRPMS/Packages/l libtelnet-(.+)\.[^.]+
-libssh2 1.9.0-3 lynx https://dl.fedoraproject.org/pub/fedora/linux/updates/31/Everything/SRPMS/Packages/l libssh2-(.+)\.[^.]+
 nasm 2.13.03-2 lynx https://git.centos.org/rpms/nasm/releases .*/c8/nasm-(.+)\.[^.]+

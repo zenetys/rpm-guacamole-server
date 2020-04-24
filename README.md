@@ -9,7 +9,6 @@ Depending on the target, this build of guacamol-server links with static builds 
 | guacamole-server    | Sources 1.1.0 from upstream                   | el6, el7, el8     |
 | libjpeg-turbo       | Source package 1.5.3-10 from CentOS 8         | el6               |
 | libtelnet           | Source package 0.21-5 from EPEL7              | el8               |
-| libssh2             | Source package 1.9.0-3 from Fedora 31         | el8               |
 | nasm                | Source package 2.13.03-2 from CentOS 8        | el7, el8          |
 
 Notes:

@@ -4,11 +4,6 @@
 
 %global username guacd
 
-%if 0%{?rhel} >= 8
-%define libssh2_version     1.9.0
-%define libssh2             libssh2-%{libssh2_version}
-%endif
-
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
 %define libtelnet_version   0.21
 %define libtelnet           libtelnet-%{libtelnet_version}
@@ -32,7 +27,7 @@
 
 Name:           guacamole-server11z
 Version:        1.1.0
-Release:        7%{?dist}.zenetys
+Release:        8%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -45,11 +40,6 @@ Source2:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c
 Source3:        https://src.fedoraproject.org/rpms/guacamole-server/raw/889f0f740e44ba6727e0db8b37bb2404fcbbe8ce/f/guacamole-server.init
 Patch1:         guacamole-server-AC_REQUIRE_tap-driver.patch
 Patch2:         guacamole-server-init.patch
-%endif
-
-%if 0%{?rhel} >= 8
-Source100:      https://libssh2.org//download/%{libssh2}.tar.gz
-Patch100:       https://src.fedoraproject.org/rpms/libssh2/raw/41525baf3f2396b61f9ea90591deb1eb178912bc/f/0001-libssh2-1.9.0-CVE-2019-17498.patch#/libssh2-CVE-2019-17498.patch
 %endif
 
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
@@ -88,6 +78,7 @@ BuildRequires:  make
 BuildRequires:  pkgconfig(cairo)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libpulse)
+BuildRequires:  pkgconfig(libssh2)
 BuildRequires:  pkgconfig(libssl)
 BuildRequires:  pkgconfig(libwebp)
 BuildRequires:  pkgconfig(ossp-uuid)
@@ -111,10 +102,6 @@ BuildRequires:  pkgconfig(winpr2)
 %if 0%{?rhel} == 7
 BuildRequires:  libwebsockets-devel
 BuildRequires:  pkgconfig(libtelnet)
-%endif
-
-%if 0%{?rhel} <= 7
-BuildRequires:  pkgconfig(libssh2)
 %endif
 
 %if 0%{?rhel} <= 6
@@ -199,14 +186,6 @@ developing applications that use guacamole-server
 %patch1 -p1
 %endif
 
-%if 0%{?rhel} >= 8
-# libssh2
-%setup -T -D -a 100 -n guacamole-server-%{version}
-cd %{libssh2}
-%patch100 -p1
-cd ..
-%endif
-
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
 # libtelnet
 %setup -T -D -a 150 -n guacamole-server-%{version}
@@ -273,16 +252,6 @@ export PKG_CONFIG_PATH
 guac_extra_cflags=
 guac_extra_ldflags=
 guac_extra_pkgconfig_path=
-
-%if 0%{?rhel} >= 8
-# libssh2
-cd %{libssh2}
-%configure --enable-static --disable-shared
-%make_build
-guac_extra_cflags+=" -I$PWD/include"
-guac_extra_ldflags+=" -L$PWD/src/.libs -lcrypto -lz -lssh2"
-cd ..
-%endif
 
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
 # libtelnet
