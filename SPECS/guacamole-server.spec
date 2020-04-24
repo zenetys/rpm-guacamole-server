@@ -85,7 +85,9 @@ Patch399:       libjpeg-turbo-freerdp-winpr-type-redef.patch
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  doxygen
+BuildRequires:  gcc
 BuildRequires:  libtool
+BuildRequires:  make
 BuildRequires:  pkgconfig(cairo)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libpulse)
