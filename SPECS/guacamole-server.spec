@@ -22,7 +22,7 @@
 %define libjpeg             libjpeg-turbo-%{libjpeg_version}
 %endif
 
-%define ffmpeg_version      4.2.2
+%define ffmpeg_version      4.2.3
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
 Name:           guacamole-server11z
