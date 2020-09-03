@@ -13,7 +13,7 @@ Depending on the target, this build of guacamol-server links with static builds 
 | nasm                | Source package 2.13.03-2 from CentOS 8        | el7, el8          |
 
 Notes:
-  - This RPM spec file creates a single package: guacamole-server11z
+  - This RPM spec file creates a single package: guacamole-server12z
   - The package can be built easily using the script `rpmbuild-docker` provided in this repository. Docker is needed.
   - Support for Kubernetes in guacd is only included in el7 builds. It requires to link with libwebsockets which is currently only available in EPEL7. Since we did not need Kubernetes support for our tests we did not push to support it for other CentOS versions.
 
