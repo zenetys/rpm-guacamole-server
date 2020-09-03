@@ -30,7 +30,7 @@
 
 Name:           guacamole-server12z
 Version:        1.2.0
-Release:        2%{?dist}.zenetys
+Release:        3%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -88,6 +88,8 @@ Patch407:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d
 Patch408:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Limit-client-cut-text-length-to-1-MB.patch#/libvncserver-Limit-client-cut-text-length-to-1-MB.patch
 Patch409:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch#/libvncserver-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch
 Patch410:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-libvncclient-cursor-limit-width-height-input-values.patch#/libvncserver-cursor-limit-width-height-input-values.patch
+Patch411:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2017-18922.patch
+Patch412:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2019-20840.patch
 %endif
 
 BuildRequires:  autoconf
@@ -265,6 +267,8 @@ cd %{libvnc}
 %patch408 -p1
 %patch409 -p1
 %patch410 -p1
+%patch411 -p1
+%patch412 -p1
 cd ..
 %endif
 
