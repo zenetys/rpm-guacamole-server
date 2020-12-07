@@ -1,5 +1,5 @@
 ffmpeg-4.2 4.2.4 lynx https://www.ffmpeg.org/releases ffmpeg-(4\.2\.[0-9.]+)
-freerdp 2.0.0-46.rc4.el8_2.2 lynx https://git.centos.org/rpms/freerdp/releases .*/c8/freerdp-(.+)
+freerdp 2.1.1-1.el8 lynx https://git.centos.org/rpms/freerdp/releases .*/c8/freerdp-(.+)
 guacamole-server 1.2.0 json https://api.github.com/repos/apache/guacamole-server/tags =([0-9.]+)
 libjpeg-turbo 1.5.3-10 lynx https://git.centos.org/rpms/libjpeg-turbo/releases .*/c8/libjpeg-turbo-(.+)\.[^.]+
 libtelnet 0.21-5 lynx https://dl.fedoraproject.org/pub/epel/7/SRPMS/Packages/l libtelnet-(.+)\.[^.]+

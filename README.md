@@ -5,7 +5,7 @@ Depending on the target, this build of guacamol-server links with static builds 
 | Component           | Sources and patches used                      | Used on build for |
 | :-------------------|:----------------------------------------------|:------------------|
 | ffmpeg              | Sources 4.2.4 from upstream                   | el6, el7, el8     |
-| freerdp             | Source package 2.0.0-46.rc4 from CentOS 8     | el6               |
+| freerdp             | Source package 2.1.1-1 from CentOS 8          | el6               |
 | guacamole-server    | Sources 1.1.0 from upstream                   | el6, el7, el8     |
 | libjpeg-turbo       | Source package 1.5.3-10 from CentOS 8         | el6               |
 | libtelnet           | Source package 0.21-5 from EPEL7              | el8               |
