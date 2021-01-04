@@ -28,9 +28,9 @@
 %define ffmpeg_version      4.2.4
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
-Name:           guacamole-server12z
-Version:        1.2.0
-Release:        4%{?dist}.zenetys
+Name:           guacamole-server13z
+Version:        1.3.0
+Release:        1%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
