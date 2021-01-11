@@ -5,7 +5,7 @@
 %global username guacd
 
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
-%define libtelnet_version   0.21
+%define libtelnet_version   0.23
 %define libtelnet           libtelnet-%{libtelnet_version}
 %endif
 
@@ -30,7 +30,7 @@
 
 Name:           guacamole-server13z
 Version:        1.3.0
-Release:        1%{?dist}.zenetys
+Release:        2%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -46,7 +46,7 @@ Patch2:         guacamole-server-init.patch
 %endif
 
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
-Source150:      https://github.com/elanthis/libtelnet/archive/%{libtelnet_version}.tar.gz#/%{libtelnet}.tar.gz
+Source150:      https://github.com/seanmiddleditch/libtelnet/archive/%{libtelnet_version}.tar.gz#/%{libtelnet}.tar.gz
 Patch150:       libtelnet-AM-PROG-AR.patch
 %endif
 
@@ -209,7 +209,7 @@ developing applications that use guacamole-server
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
 # libtelnet
 %setup -T -D -a 150 -n guacamole-server-%{version}
-%if 0%{?rhel} >= 8
+%if 0%{?rhel} <= 8
 cd %{libtelnet}
 %patch150 -p1
 cd ..
@@ -301,6 +301,7 @@ autoreconf -vif
 %make_build
 guac_extra_cflags+=" -I$PWD"
 guac_extra_ldflags+=" -L$PWD/.libs"
+guac_extra_libs+=" -lz"
 cd ..
 %endif
 

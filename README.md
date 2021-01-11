@@ -8,7 +8,7 @@ Depending on the target, this build of guacamol-server links with static builds 
 | freerdp             | Source package 2.1.1-1 from CentOS 8          | el6               |
 | guacamole-server    | Sources 1.3.0 from upstream                   | el6, el7, el8     |
 | libjpeg-turbo       | Source package 1.5.3-10 from CentOS 8         | el6               |
-| libtelnet           | Source package 0.21-5 from EPEL7              | el8               |
+| libtelnet           | Source package 0.23-1 from EPEL7              | el6, el8          |
 | libvncserver        | Source package 0.9.11-15 from CentOS 8        | el6               |
 | nasm                | Source package 2.13.03-2 from CentOS 8        | el7, el8          |
 
