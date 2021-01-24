@@ -80,13 +80,14 @@ Patch402:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d
 Patch403:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0001-auth-Add-API-to-unregister-built-in-security-handler.patch#/libvncserver-auth-Add-API-to-unregister-built-in-security-handler.patch
 Patch404:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-system_minilzo.patch#/libvncserver-system_minilzo.patch
 Patch405:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.1-multilib.patch#/libvncserver-multilib.patch
-Patch406:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/LibVNCServer-0.9.10-system-crypto-policy.patch#/libvncserver-system-crypto-policy.patch
 Patch407:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Validate-client-cut-text-length.patch#/libvncserver-Validate-client-cut-text-length.patch
 Patch408:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Limit-client-cut-text-length-to-1-MB.patch#/libvncserver-Limit-client-cut-text-length-to-1-MB.patch
 Patch409:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch#/libvncserver-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch
 Patch410:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-libvncclient-cursor-limit-width-height-input-values.patch#/libvncserver-cursor-limit-width-height-input-values.patch
 Patch411:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2017-18922.patch
 Patch412:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2019-20840.patch
+# Patch LibVNCServer-0.9.10-system-crypto-policy.patch is not included
+# because gnutls does not support @KEYWORD style strings on el6.
 %endif
 
 BuildRequires:  autoconf
@@ -263,7 +264,6 @@ cd %{libvnc}
 %patch403 -p1
 %patch404 -p1
 %patch405 -p1
-%patch406 -p1
 %patch407 -p1
 %patch408 -p1
 %patch409 -p1
