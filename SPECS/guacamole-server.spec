@@ -88,6 +88,8 @@ Patch411:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f52842
 Patch412:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2019-20840.patch
 # Patch LibVNCServer-0.9.10-system-crypto-policy.patch is not included
 # because gnutls does not support @KEYWORD style strings on el6.
+# Patch libvncserver-0.9.11-soname.patch is not included because we only
+# build the library to link it statically with guacamole.
 %endif
 
 BuildRequires:  autoconf
