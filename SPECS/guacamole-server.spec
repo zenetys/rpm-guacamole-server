@@ -2,6 +2,12 @@
 %define make_build %{__make} %{?_smp_mflags}
 %endif
 
+%if 0%{?rhel} == 7
+# debugedit (called by find-debuginfo.sh) fails on el7
+# Failed to write file: invalid section alignment
+%define debug_package %{nil}
+%endif
+
 %global username guacd
 
 %if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
@@ -12,6 +18,9 @@
 %if 0%{?rhel} <= 7
 %define nasm_version        2.13.03
 %define nasm                nasm-%{nasm_version}
+
+%define libvnc_version      0.9.11
+%define libvnc              libvncserver-LibVNCServer-%{libvnc_version}
 %endif
 
 %if 0%{?rhel} <= 6
@@ -20,9 +29,6 @@
 
 %define libjpeg_version     1.5.3
 %define libjpeg             libjpeg-turbo-%{libjpeg_version}
-
-%define libvnc_version      0.9.11
-%define libvnc              libvncserver-LibVNCServer-%{libvnc_version}
 %endif
 
 %define ffmpeg_version      4.2.4
@@ -30,7 +36,7 @@
 
 Name:           guacamole-server13z
 Version:        1.3.0
-Release:        2%{?dist}.zenetys
+Release:        3%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -72,7 +78,9 @@ Patch355:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943
 Patch356:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CET.patch#/libjpeg-turbo-CET.patch
 Patch357:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CVE-2018-14498.patch#/libjpeg-turbo-CVE-2018-14498.patch
 Patch399:       libjpeg-turbo-freerdp-winpr-type-redef.patch
+%endif
 
+%if 0%{?rhel} <= 7
 Source400:      https://github.com/LibVNC/libvncserver/archive/LibVNCServer-%{libvnc_version}.tar.gz
 Patch400:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0040-Ensure-compatibility-with-gtk-vnc-0.7.0.patch#/libvncserver-Ensure-compatibility-with-gtk-vnc-0.7.0.patch
 Patch401:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0001-libvncserver-Add-API-to-add-custom-I-O-entry-points.patch#/libvncserver-Add-API-to-add-custom-I-O-entry-points.patch
@@ -87,7 +95,8 @@ Patch410:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d
 Patch411:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2017-18922.patch
 Patch412:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2019-20840.patch
 # Patch LibVNCServer-0.9.10-system-crypto-policy.patch is not included
-# because gnutls does not support @KEYWORD style strings on el6.
+# because @KEYWORD style priority strings are not supported either by
+# the version of gnutls (el6) or by the distro (el7).
 # Patch libvncserver-0.9.11-soname.patch is not included because we only
 # build the library to link it statically with guacamole.
 %endif
@@ -109,6 +118,7 @@ BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(vorbis)
 
 %if 0%{?rhel} >= 8
+BuildRequires:  pkgconfig(libvncserver)
 %ifarch %{ix86} x86_64
 BuildRequires:  nasm
 %endif
@@ -119,12 +129,13 @@ BuildRequires:  libjpeg-devel
 BuildRequires:  systemd-devel
 BuildRequires:  pkgconfig(freerdp2)
 BuildRequires:  pkgconfig(freerdp-client2)
-BuildRequires:  pkgconfig(libvncserver)
 BuildRequires:  pkgconfig(winpr2)
 %endif
 
 %if 0%{?rhel} == 7
+BuildRequires:  libgcrypt-devel
 BuildRequires:  libwebsockets-devel
+BuildRequires:  lzo-devel
 BuildRequires:  pkgconfig(libtelnet)
 %endif
 
@@ -257,6 +268,8 @@ cd %{libjpeg}
 %patch355 -p1 -b .coverity
 %patch356 -p1 -b .CET
 %patch357 -p1 -b .CVE-2018-14498
+%endif
+%if 0%{?rhel} <= 7
 # libvnc
 %setup -T -D -a 400 -n guacamole-server-%{version}
 cd %{libvnc}
@@ -429,13 +442,15 @@ for l in $PWD/install/usr/%{_lib}/freerdp2/*.a; do
     guac_extra_ldflags+=" -l$l"
 done
 cd ..
+%endif
 
+%if 0%{?rhel} <= 7
 # libvnc
 cd %{libvnc}
 autoreconf -vif
 (
-    CFLAGS+=" $libjpeg_cflags"
-    LDFLAGS+=" $libjpeg_ldflags"
+    CFLAGS+=${libjpeg_cflags:+" $libjpeg_cflags"}
+    LDFLAGS+=${libjpeg_ldflags:+" $libjpeg_ldflags"}
     export JPEG_LDFLAGS="-ljpeg"
     ./configure \
         --prefix=$PWD/install \
@@ -448,6 +463,9 @@ autoreconf -vif
 make install
 guac_extra_cflags+=" -I$PWD/install/include"
 guac_extra_ldflags+=" -L$PWD/install/lib -lgnutls"
+%if 0%{?rhel} == 7
+guac_extra_ldflags+=" -lz -ljpeg -lgcrypt"
+%endif
 guac_extra_libs+=" -lminilzo"
 cd ..
 %endif
@@ -487,15 +505,6 @@ install -p -m 644 -D %{SOURCE2} %{buildroot}%{_unitdir}/guacd.service
 install -p -m 755 -D %{SOURCE3} %{buildroot}%{_initrddir}/guacd
 patch -p0 %{buildroot}%{_initrddir}/guacd %{PATCH2}
 mkdir -p %{buildroot}%{_var}/run/guacd
-%endif
-
-%if 0%{?rhel} == 7
-# Although it seams to run fine, there is an issue with this binary,
-# debugedit (called by find-debuginfo.sh) returns an error "invalid section
-# alignment". Other tools like readelf also emit warnings.
-# This chmod trick allows to exclude the binary from the debuginfo package.
-# Proper mode it set back in the %file section.
-chmod 644 %{buildroot}%{_bindir}/guacenc
 %endif
 
 %pre
