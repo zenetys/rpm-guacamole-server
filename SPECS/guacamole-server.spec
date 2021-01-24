@@ -158,6 +158,13 @@ Requires(postun):  /sbin/service
 
 Requires:       dejavu-sans-mono-fonts
 
+# Make sure freerdp is up-to-date on el7 and el8 to avoid an undefined symbol:
+#   /lib64/libguac-client-rdp.so: error: symbol lookup error:
+#   undefined symbol: WLog_IsLevelActive (fatal)
+%if 0%{?rhel} >= 7
+Requires:       freerdp-libs >= 2.1.1
+%endif
+
 Provides:       guacd
 Provides:       libguac
 %if 0%{?rhel} == 7
