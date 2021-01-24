@@ -1,6 +1,6 @@
 Supported targets: el6, el7, el8
 
-Depending on the target, this build of guacamol-server links with static builds of other components. The goal is to be able to install the package on [CentOS](https://www.centos.org/) without the need for external RPM repositories others than [EPEL](https://fedoraproject.org/wiki/EPEL).
+Depending on the target, this build of guacamole-server links with static builds of other components. The goal is to be able to install the package on [CentOS](https://www.centos.org/) without the need for external RPM repositories others than [EPEL](https://fedoraproject.org/wiki/EPEL).
 
 | Component           | Sources and patches used                      | Used on build for |
 | :-------------------|:----------------------------------------------|:------------------|
