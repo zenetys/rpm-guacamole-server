@@ -16,7 +16,7 @@
 %endif
 
 %if 0%{?rhel} <= 7
-%define nasm_version        2.13.03
+%define nasm_version        2.15.03
 %define nasm                nasm-%{nasm_version}
 
 %define libvnc_version      0.9.11
@@ -36,7 +36,7 @@
 
 Name:           guacamole-server13z
 Version:        1.3.0
-Release:        3%{?dist}.zenetys
+Release:        4%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -58,7 +58,6 @@ Patch150:       libtelnet-AM-PROG-AR.patch
 
 %if 0%{?rhel} <= 7
 Source200:      https://www.nasm.us/pub/nasm/releasebuilds/%{nasm_version}/%{nasm}.tar.gz
-Patch201:       https://git.centos.org/rpms/nasm/raw/2c880c9d584254e6fff2d6acabae431d17dac16b/f/SOURCES/0001-Remove-invalid-pure_func-qualifiers.patch#/nasm-Remove-invalid-pure_func-qualifiers.patch
 %endif
 
 Source260:      https://ffmpeg.org/releases/%{ffmpeg}.tar.bz2
@@ -241,7 +240,7 @@ cd ..
 # nasm
 %setup -T -D -a 200 -n guacamole-server-%{version}
 cd %{nasm}
-%patch201 -p1
+# nasm patches
 cd ..
 %endif
 
