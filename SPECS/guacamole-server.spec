@@ -36,7 +36,7 @@
 
 Name:           guacamole-server13z
 Version:        1.3.0
-Release:        5%{?dist}.zenetys
+Release:        6%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -92,6 +92,11 @@ Patch409:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d
 Patch410:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-libvncclient-cursor-limit-width-height-input-values.patch#/libvncserver-cursor-limit-width-height-input-values.patch
 Patch411:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2017-18922.patch
 Patch412:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2019-20840.patch
+Patch413:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2019-20839.patch
+Patch414:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2018-21247.patch
+Patch415:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2020-14405.patch
+Patch416:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2020-14397.patch
+Patch417:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2020-25708.patch
 # Patch LibVNCServer-0.9.10-system-crypto-policy.patch is not included
 # because @KEYWORD style priority strings are not supported either by
 # the version of gnutls (el6) or by the distro (el7).
@@ -283,6 +288,11 @@ cd %{libvnc}
 %patch410 -p1
 %patch411 -p1
 %patch412 -p1
+%patch413 -p1
+%patch414 -p1
+%patch415 -p1
+%patch416 -p1
+%patch417 -p1
 cd ..
 %endif
 
