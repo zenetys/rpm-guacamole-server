@@ -7,7 +7,7 @@
 
 set -o pipefail
 PROGNAME=${0##*/}
-SUFFIX="(tar\\.gz|tgz|tar\\.xz|tar\\.bz2|tbz|zip|src\\.rpm)"
+SUFFIX="(tar\\.gz|tgz|tar\\.xz|tar\\.bz2|tbz|zip|(src\\.)?rpm)"
 CACHEDIR=${CACHEDIR:-/tmp/$PROGNAME}
 
 function get-data-lynx() {
