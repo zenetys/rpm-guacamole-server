@@ -24,7 +24,7 @@
 %endif
 
 %if 0%{?rhel} <= 6
-%define freerdp_version     2.1.1
+%define freerdp_version     2.2.0
 %define freerdp             FreeRDP-%{freerdp_version}
 
 %define libjpeg_version     1.5.3
@@ -36,7 +36,7 @@
 
 Name:           guacamole-server13z
 Version:        1.3.0
-Release:        4%{?dist}.zenetys
+Release:        5%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -65,7 +65,6 @@ Patch261:       https://pkgs.rpmfusion.org/cgit/free/ffmpeg.git/plain/fix_ppc_bu
 
 %if 0%{?rhel} <= 6
 Source320:      https://github.com/FreeRDP/FreeRDP/archive/%{freerdp_version}/%{freerdp}.tar.gz
-Patch320:       https://git.centos.org/rpms/freerdp/raw/e669e9a335753c4517d3d0ffc22d0b15f3880d9e/f/SOURCES/winpr-library-Use-RTLD_GLOBAL-for-dlopen.patch#/winpr-library-Use-RTLD_GLOBAL-for-dlopen.patch
 
 Source350:      https://downloads.sourceforge.net/libjpeg-turbo/%{libjpeg}.tar.gz
 Patch350:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo14-noinst.patch#/libjpeg-turbo-noinst.patch
@@ -254,7 +253,7 @@ cd ..
 # freerdp
 %setup -T -D -a 320 -n guacamole-server-%{version}
 cd %{freerdp}
-%patch320 -p1
+# freerdp patches
 cd ..
 # libjpeg
 %setup -T -D -a 350 -n guacamole-server-%{version}
