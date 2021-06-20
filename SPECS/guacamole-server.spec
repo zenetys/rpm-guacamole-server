@@ -36,7 +36,7 @@
 
 Name:           guacamole-server13z
 Version:        1.3.0
-Release:        6%{?dist}.zenetys
+Release:        7%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -175,11 +175,14 @@ Requires(postun):  /sbin/service
 
 Requires:       dejavu-sans-mono-fonts
 
-# Make sure freerdp is up-to-date on el7 and el8 to avoid an undefined symbol:
-#   /lib64/libguac-client-rdp.so: error: symbol lookup error:
-#   undefined symbol: WLog_IsLevelActive (fatal)
+# Make sure freerdp is up-to-date on el7 and el8 to avoid
+# undefined symbol issues
+%if 0%{?rhel} >= 8
+Requires:       freerdp-libs >= 2:2.2.0
+%else
 %if 0%{?rhel} >= 7
 Requires:       freerdp-libs >= 2.1.1
+%endif
 %endif
 
 Provides:       guacd
