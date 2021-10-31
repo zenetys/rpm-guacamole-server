@@ -31,12 +31,12 @@
 %define libjpeg             libjpeg-turbo-%{libjpeg_version}
 %endif
 
-%define ffmpeg_version      4.2.4
+%define ffmpeg_version      4.2.5
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
 Name:           guacamole-server13z
 Version:        1.3.0
-Release:        7%{?dist}.zenetys
+Release:        8%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
