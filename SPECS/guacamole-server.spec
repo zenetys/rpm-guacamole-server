@@ -36,7 +36,7 @@
 
 Name:           guacamole-server13z
 Version:        1.3.0
-Release:        8%{?dist}.zenetys
+Release:        9%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -65,6 +65,9 @@ Patch261:       https://pkgs.rpmfusion.org/cgit/free/ffmpeg.git/plain/fix_ppc_bu
 
 %if 0%{?rhel} <= 6
 Source320:      https://github.com/FreeRDP/FreeRDP/archive/%{freerdp_version}/%{freerdp}.tar.gz
+Patch320:       https://git.centos.org/rpms/freerdp/raw/35d6440206cb3ab0dd36ab77cfaf1bd0473d0f32/f/SOURCES/Add-checks-for-bitmap-and-glyph-width-heigth-values.patch#/freerdp-Add-checks-for-bitmap-and-glyph-width-heigth-values.patch
+Patch321:       https://git.centos.org/rpms/freerdp/raw/35d6440206cb3ab0dd36ab77cfaf1bd0473d0f32/f/SOURCES/Implement-missing-TSG-debug-functions.patch#/freerdp-Implement-missing-TSG-debug-functions.patch
+Patch322:       https://git.centos.org/rpms/freerdp/raw/35d6440206cb3ab0dd36ab77cfaf1bd0473d0f32/f/SOURCES/Refactored-RPC-gateway-parser.patch#/freerdp-Refactored-RPC-gateway-parser.patch
 
 Source350:      https://downloads.sourceforge.net/libjpeg-turbo/%{libjpeg}.tar.gz
 Patch350:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo14-noinst.patch#/libjpeg-turbo-noinst.patch
@@ -75,6 +78,7 @@ Patch354:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943
 Patch355:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-coverity.patch#/libjpeg-turbo-coverity.patch
 Patch356:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CET.patch#/libjpeg-turbo-CET.patch
 Patch357:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CVE-2018-14498.patch#/libjpeg-turbo-CVE-2018-14498.patch
+Patch358:       https://git.centos.org/rpms/libjpeg-turbo/raw/462bd6c14d7fffb74fe6069fd7abd8e42f2d135c/f/SOURCES/libjpeg-turbo-CVE-2020-17541.patch#/libjpeg-turbo-CVE-2020-17541.patch
 Patch399:       libjpeg-turbo-freerdp-winpr-type-redef.patch
 %endif
 
@@ -261,7 +265,9 @@ cd ..
 # freerdp
 %setup -T -D -a 320 -n guacamole-server-%{version}
 cd %{freerdp}
-# freerdp patches
+%patch320 -p1
+%patch321 -p1
+%patch322 -p1
 cd ..
 # libjpeg
 %setup -T -D -a 350 -n guacamole-server-%{version}
@@ -274,6 +280,7 @@ cd %{libjpeg}
 %patch355 -p1 -b .coverity
 %patch356 -p1 -b .CET
 %patch357 -p1 -b .CVE-2018-14498
+%patch358 -p1 -b .CVE-2020-17541
 %endif
 %if 0%{?rhel} <= 7
 # libvnc
