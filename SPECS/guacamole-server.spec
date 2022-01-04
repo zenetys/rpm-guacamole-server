@@ -39,7 +39,7 @@
 
 Name:           guacamole-server14z
 Version:        1.4.0
-Release:        1%{?dist}.zenetys
+Release:        2%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -68,9 +68,10 @@ Patch261:       https://pkgs.rpmfusion.org/cgit/free/ffmpeg.git/plain/fix_ppc_bu
 
 %if 0%{?rhel} <= 6
 Source320:      https://github.com/FreeRDP/FreeRDP/archive/%{freerdp_version}/%{freerdp}.tar.gz
-Patch320:       %freerdp_patch_url/Add-checks-for-bitmap-and-glyph-width-heigth-values.patch#/freerdp-Add-checks-for-bitmap-and-glyph-width-heigth-values.patch
-Patch321:       %freerdp_patch_url/Implement-missing-TSG-debug-functions.patch#/freerdp-Implement-missing-TSG-debug-functions.patch
-Patch322:       %freerdp_patch_url/Refactored-RPC-gateway-parser.patch#/freerdp-Refactored-RPC-gateway-parser.patch
+Patch320:       %freerdp_patch_url/6741.patch#/freerdp-6741.patch
+Patch321:       %freerdp_patch_url/Add-checks-for-bitmap-and-glyph-width-heigth-values.patch#/freerdp-Add-checks-for-bitmap-and-glyph-width-heigth-values.patch
+Patch322:       %freerdp_patch_url/Implement-missing-TSG-debug-functions.patch#/freerdp-Implement-missing-TSG-debug-functions.patch
+Patch323:       %freerdp_patch_url/Refactored-RPC-gateway-parser.patch#/freerdp-Refactored-RPC-gateway-parser.patch
 
 Source350:      https://downloads.sourceforge.net/libjpeg-turbo/%{libjpeg}.tar.gz
 Patch350:       %libjpeg_patch_url/libjpeg-turbo14-noinst.patch#/libjpeg-turbo-noinst.patch
@@ -271,6 +272,7 @@ cd %{freerdp}
 %patch320 -p1
 %patch321 -p1
 %patch322 -p1
+%patch323 -p1
 cd ..
 # libjpeg
 %setup -T -D -a 350 -n guacamole-server-%{version}
