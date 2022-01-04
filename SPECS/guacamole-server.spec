@@ -34,9 +34,9 @@
 %define ffmpeg_version      4.2.5
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
-Name:           guacamole-server13z
-Version:        1.3.0
-Release:        9%{?dist}.zenetys
+Name:           guacamole-server14z
+Version:        1.4.0
+Release:        1%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -132,6 +132,7 @@ BuildRequires:  nasm
 %endif
 
 %if 0%{?rhel} >= 7
+BuildRequires:  libgcrypt-devel
 BuildRequires:  libjpeg-devel
 BuildRequires:  systemd-devel
 BuildRequires:  pkgconfig(freerdp2)
@@ -140,7 +141,6 @@ BuildRequires:  pkgconfig(winpr2)
 %endif
 
 %if 0%{?rhel} == 7
-BuildRequires:  libgcrypt-devel
 BuildRequires:  libwebsockets-devel
 BuildRequires:  lzo-devel
 BuildRequires:  pkgconfig(libtelnet)
