@@ -21,14 +21,17 @@
 
 %define libvnc_version      0.9.11
 %define libvnc              libvncserver-LibVNCServer-%{libvnc_version}
+%define libvnc_patch_url    https://git.rockylinux.org/staging/rpms/libvncserver/-/raw/imports/r8/libvncserver-%{libvnc_version}-17.el8/SOURCES
 %endif
 
 %if 0%{?rhel} <= 6
 %define freerdp_version     2.2.0
 %define freerdp             FreeRDP-%{freerdp_version}
+%define freerdp_patch_url   https://git.rockylinux.org/staging/rpms/freerdp/-/raw/imports/r8/freerdp-%{freerdp_version}-7.el8_5/SOURCES
 
 %define libjpeg_version     1.5.3
 %define libjpeg             libjpeg-turbo-%{libjpeg_version}
+%define libjpeg_patch_url   https://git.rockylinux.org/staging/rpms/libjpeg-turbo/-/raw/imports/r8/libjpeg-turbo-%{libjpeg_version}-12.el8/SOURCES
 %endif
 
 %define ffmpeg_version      4.2.5
@@ -65,42 +68,42 @@ Patch261:       https://pkgs.rpmfusion.org/cgit/free/ffmpeg.git/plain/fix_ppc_bu
 
 %if 0%{?rhel} <= 6
 Source320:      https://github.com/FreeRDP/FreeRDP/archive/%{freerdp_version}/%{freerdp}.tar.gz
-Patch320:       https://git.centos.org/rpms/freerdp/raw/35d6440206cb3ab0dd36ab77cfaf1bd0473d0f32/f/SOURCES/Add-checks-for-bitmap-and-glyph-width-heigth-values.patch#/freerdp-Add-checks-for-bitmap-and-glyph-width-heigth-values.patch
-Patch321:       https://git.centos.org/rpms/freerdp/raw/35d6440206cb3ab0dd36ab77cfaf1bd0473d0f32/f/SOURCES/Implement-missing-TSG-debug-functions.patch#/freerdp-Implement-missing-TSG-debug-functions.patch
-Patch322:       https://git.centos.org/rpms/freerdp/raw/35d6440206cb3ab0dd36ab77cfaf1bd0473d0f32/f/SOURCES/Refactored-RPC-gateway-parser.patch#/freerdp-Refactored-RPC-gateway-parser.patch
+Patch320:       %freerdp_patch_url/Add-checks-for-bitmap-and-glyph-width-heigth-values.patch#/freerdp-Add-checks-for-bitmap-and-glyph-width-heigth-values.patch
+Patch321:       %freerdp_patch_url/Implement-missing-TSG-debug-functions.patch#/freerdp-Implement-missing-TSG-debug-functions.patch
+Patch322:       %freerdp_patch_url/Refactored-RPC-gateway-parser.patch#/freerdp-Refactored-RPC-gateway-parser.patch
 
 Source350:      https://downloads.sourceforge.net/libjpeg-turbo/%{libjpeg}.tar.gz
-Patch350:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo14-noinst.patch#/libjpeg-turbo-noinst.patch
-Patch351:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-header-files.patch#/libjpeg-turbo-header-files.patch
-Patch352:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CVE-2018-11813.patch#/libjpeg-turbo-CVE-2018-11813.patch
-Patch353:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CVE-2018-1152.patch#/libjpeg-turbo-CVE-2018-1152.patch
-Patch354:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-honor-naflags.patch#/libjpeg-turbo-honor-naflags.patch
-Patch355:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-coverity.patch#/libjpeg-turbo-coverity.patch
-Patch356:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CET.patch#/libjpeg-turbo-CET.patch
-Patch357:       https://git.centos.org/rpms/libjpeg-turbo/raw/72e67db515b0b4d943c3bb8e6cf563d16817dd87/f/SOURCES/libjpeg-turbo-CVE-2018-14498.patch#/libjpeg-turbo-CVE-2018-14498.patch
-Patch358:       https://git.centos.org/rpms/libjpeg-turbo/raw/462bd6c14d7fffb74fe6069fd7abd8e42f2d135c/f/SOURCES/libjpeg-turbo-CVE-2020-17541.patch#/libjpeg-turbo-CVE-2020-17541.patch
+Patch350:       %libjpeg_patch_url/libjpeg-turbo14-noinst.patch#/libjpeg-turbo-noinst.patch
+Patch351:       %libjpeg_patch_url/libjpeg-turbo-header-files.patch#/libjpeg-turbo-header-files.patch
+Patch352:       %libjpeg_patch_url/libjpeg-turbo-CVE-2018-11813.patch#/libjpeg-turbo-CVE-2018-11813.patch
+Patch353:       %libjpeg_patch_url/libjpeg-turbo-CVE-2018-1152.patch#/libjpeg-turbo-CVE-2018-1152.patch
+Patch354:       %libjpeg_patch_url/libjpeg-turbo-honor-naflags.patch#/libjpeg-turbo-honor-naflags.patch
+Patch355:       %libjpeg_patch_url/libjpeg-turbo-coverity.patch#/libjpeg-turbo-coverity.patch
+Patch356:       %libjpeg_patch_url/libjpeg-turbo-CET.patch#/libjpeg-turbo-CET.patch
+Patch357:       %libjpeg_patch_url/libjpeg-turbo-CVE-2018-14498.patch#/libjpeg-turbo-CVE-2018-14498.patch
+Patch358:       %libjpeg_patch_url/libjpeg-turbo-CVE-2020-17541.patch#/libjpeg-turbo-CVE-2020-17541.patch
 Patch399:       libjpeg-turbo-freerdp-winpr-type-redef.patch
 %endif
 
 %if 0%{?rhel} <= 7
 Source400:      https://github.com/LibVNC/libvncserver/archive/LibVNCServer-%{libvnc_version}.tar.gz
-Patch400:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0040-Ensure-compatibility-with-gtk-vnc-0.7.0.patch#/libvncserver-Ensure-compatibility-with-gtk-vnc-0.7.0.patch
-Patch401:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0001-libvncserver-Add-API-to-add-custom-I-O-entry-points.patch#/libvncserver-Add-API-to-add-custom-I-O-entry-points.patch
-Patch402:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0002-libvncserver-Add-channel-security-handlers.patch#/libvncserver-Add-channel-security-handlers.patch
-Patch403:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/0001-auth-Add-API-to-unregister-built-in-security-handler.patch#/libvncserver-auth-Add-API-to-unregister-built-in-security-handler.patch
-Patch404:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-system_minilzo.patch#/libvncserver-system_minilzo.patch
-Patch405:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.1-multilib.patch#/libvncserver-multilib.patch
-Patch407:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Validate-client-cut-text-length.patch#/libvncserver-Validate-client-cut-text-length.patch
-Patch408:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Limit-client-cut-text-length-to-1-MB.patch#/libvncserver-Limit-client-cut-text-length-to-1-MB.patch
-Patch409:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch#/libvncserver-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch
-Patch410:       https://git.centos.org/rpms/libvncserver/raw/d8e4b372c045a24343d9f8a508223fecfd1dc018/f/SOURCES/libvncserver-0.9.11-libvncclient-cursor-limit-width-height-input-values.patch#/libvncserver-cursor-limit-width-height-input-values.patch
-Patch411:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2017-18922.patch
-Patch412:       https://git.centos.org/rpms/libvncserver/raw/9ca2f2a83c015f528422279470b2f69638b56557/f/SOURCES/libvncserver-0.9.11-CVE-2019-20840.patch
-Patch413:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2019-20839.patch
-Patch414:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2018-21247.patch
-Patch415:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2020-14405.patch
-Patch416:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2020-14397.patch
-Patch417:       https://git.centos.org/rpms/libvncserver/raw/07ca881ce05ff22fec1b3d0a20679c6978e43753/f/SOURCES/libvncserver-0.9.11-CVE-2020-25708.patch
+Patch400:       %libvnc_patch_url/0040-Ensure-compatibility-with-gtk-vnc-0.7.0.patch#/libvncserver-Ensure-compatibility-with-gtk-vnc-0.7.0.patch
+Patch401:       %libvnc_patch_url/0001-libvncserver-Add-API-to-add-custom-I-O-entry-points.patch#/libvncserver-Add-API-to-add-custom-I-O-entry-points.patch
+Patch402:       %libvnc_patch_url/0002-libvncserver-Add-channel-security-handlers.patch#/libvncserver-Add-channel-security-handlers.patch
+Patch403:       %libvnc_patch_url/0001-auth-Add-API-to-unregister-built-in-security-handler.patch#/libvncserver-auth-Add-API-to-unregister-built-in-security-handler.patch
+Patch404:       %libvnc_patch_url/libvncserver-0.9.11-system_minilzo.patch#/libvncserver-system_minilzo.patch
+Patch405:       %libvnc_patch_url/libvncserver-0.9.1-multilib.patch#/libvncserver-multilib.patch
+Patch407:       %libvnc_patch_url/libvncserver-0.9.11-Validate-client-cut-text-length.patch#/libvncserver-Validate-client-cut-text-length.patch
+Patch408:       %libvnc_patch_url/libvncserver-0.9.11-Limit-client-cut-text-length-to-1-MB.patch#/libvncserver-Limit-client-cut-text-length-to-1-MB.patch
+Patch409:       %libvnc_patch_url/libvncserver-0.9.11-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch#/libvncserver-Fix-CVE-2018-15127-Heap-out-of-bounds-write-in-rfbse.patch
+Patch410:       %libvnc_patch_url/libvncserver-0.9.11-libvncclient-cursor-limit-width-height-input-values.patch#/libvncserver-cursor-limit-width-height-input-values.patch
+Patch411:       %libvnc_patch_url/libvncserver-0.9.11-CVE-2017-18922.patch
+Patch412:       %libvnc_patch_url/libvncserver-0.9.11-CVE-2019-20840.patch
+Patch413:       %libvnc_patch_url/libvncserver-0.9.11-CVE-2019-20839.patch
+Patch414:       %libvnc_patch_url/libvncserver-0.9.11-CVE-2018-21247.patch
+Patch415:       %libvnc_patch_url/libvncserver-0.9.11-CVE-2020-14405.patch
+Patch416:       %libvnc_patch_url/libvncserver-0.9.11-CVE-2020-14397.patch
+Patch417:       %libvnc_patch_url/libvncserver-0.9.11-CVE-2020-25708.patch
 # Patch LibVNCServer-0.9.10-system-crypto-policy.patch is not included
 # because @KEYWORD style priority strings are not supported either by
 # the version of gnutls (el6) or by the distro (el7).
