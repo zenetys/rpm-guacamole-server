@@ -39,7 +39,7 @@
 
 Name:           guacamole-server14z
 Version:        1.4.0
-Release:        3%{?dist}.zenetys
+Release:        4%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -372,7 +372,7 @@ cd %{ffmpeg}
     --enable-ffmpeg \
     --enable-filter=scale \
     --enable-gpl \
-    --enable-muxer=rawvideo,mov,mp4 \
+    --enable-muxer=rawvideo,mov,mp4,m4v \
     --enable-pic \
     --enable-protocol=file \
     --enable-small \
