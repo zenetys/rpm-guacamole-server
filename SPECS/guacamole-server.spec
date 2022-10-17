@@ -34,12 +34,12 @@
 %define libjpeg_patch_url   https://git.rockylinux.org/staging/rpms/libjpeg-turbo/-/raw/imports/r8/libjpeg-turbo-%{libjpeg_version}-12.el8/SOURCES
 %endif
 
-%define ffmpeg_version      4.2.7
+%define ffmpeg_version      4.2.8
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
 Name:           guacamole-server14z
 Version:        1.4.0
-Release:        5%{?dist}.zenetys
+Release:        6%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
