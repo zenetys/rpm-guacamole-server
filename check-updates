@@ -6,9 +6,26 @@
 #
 
 set -o pipefail
+set -f
 PROGNAME=${0##*/}
 SUFFIX="(tar\\.gz|tgz|tar\\.xz|tar\\.bz2|tbz|zip|(src\\.)?rpm)"
 CACHEDIR=${CACHEDIR:-/tmp/$PROGNAME}
+
+curlopts=( --connect-timeout 10 -fLs --netrc-optional )
+
+function curl_github_api_pages() {
+  local pages p
+  pages=$(set -o pipefail; curl "${curlopts[@]}" -I "$1?per_page=100" |
+    sed -nre 's,^link:.*[?&]page=([0-9]+)>; rel="last".*,\1,p') || return $?
+  if [[ -z $pages ]]; then
+    curl "${curlopts[@]}" "$1?per_page=100"
+  else
+    for (( p = 1; p <= pages; p++ )); do
+      curl "${curlopts[@]}" "$1?per_page=100&page=$p"
+      sleep 1
+    done
+  fi
+}
 
 function get-data-lynx() {
   local url=$1 ; shift
@@ -17,13 +34,19 @@ function get-data-lynx() {
 
 function get-data-json() {
   local url=$1 ; shift
-  curl --connect-timeout 10 -fLs "$url" |jq |grep -Pio '(?<=")[a-z+]+://[^"]+'
+  local expression=${1:-.} ; shift
+  local pattern='(?<=")'${1:-'[a-z+]+://.+'}'(?=")' ; shift
+  if [[ $url == https://api.github.com/* ]]; then
+    curl_github_api_pages "$url"
+  else
+    curl "${curlopts[@]}" "$url"
+  fi |jq "$expression" |grep -Pio "$pattern"
 }
 
 function get-data() {
-  local method=$1 ; shift
+  local method=( ${1//:/$IFS} ) ; shift
   if declare -F -f "$FUNCNAME-$method"; then
-    "$FUNCNAME-$method" "$@" || return 1
+    "$FUNCNAME-$method" "$1" "${method[@]:1}" || return 1
   else
     return 1
   fi
@@ -58,6 +81,8 @@ function check-updates() {
   elif [[ ${pattern:0:1} == "/" ]] ; then
     s=$pattern
     pattern=".*/${s%/*}/(${s##*/}\\.$SUFFIX)"
+  elif [[ ${pattern:0:1} == "<" ]]; then
+    pattern=".*\\<(${pattern:1})"
   elif [[ ${pattern:0:1} == "=" ]]; then
     pattern=".*/(${pattern:1})"
   else
@@ -81,7 +106,7 @@ function check-updates() {
   [[ -z $FORCE && -s $CACHEDIR/$h.list ]] ||
     cat $CACHEDIR/$h.data |
     sed -r -n -e "s'^$pattern$'\0\t$rewrite'p" |
-    sort -u -V -k 2 > $CACHEDIR/$h.list
+    sort -t $'\t' -u -k 2V,2 > $CACHEDIR/$h.list
 
   while read -r s v f ; do
     source=$s ; version=$v ; filename=$f
@@ -101,6 +126,7 @@ function check-updates() {
        echo "[DEBUG] $current ? ${ordered[0]} < ${ordered[1]}" >&2
     if [[ ${ordered[1]} != $current ]]; then
       echo "** $base ($current) need update to $version **"
+      return 1
     fi
   fi
 }
