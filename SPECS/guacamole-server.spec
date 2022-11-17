@@ -10,7 +10,7 @@
 
 %global username guacd
 
-%if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
+%if 0%{?rhel} <= 6
 %define libtelnet_version   0.23
 %define libtelnet           libtelnet-%{libtelnet_version}
 %endif
@@ -54,7 +54,7 @@ Patch1:         guacamole-server-AC_REQUIRE_tap-driver.patch
 Patch2:         guacamole-server-init.patch
 %endif
 
-%if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
+%if 0%{?rhel} <= 6
 Source150:      https://github.com/seanmiddleditch/libtelnet/archive/%{libtelnet_version}.tar.gz#/%{libtelnet}.tar.gz
 Patch150:       libtelnet-AM-PROG-AR.patch
 %endif
@@ -242,14 +242,12 @@ developing applications that use guacamole-server
 %patch1 -p1
 %endif
 
-%if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
+%if 0%{?rhel} <= 6
 # libtelnet
 %setup -T -D -a 150 -n guacamole-server-%{version}
-%if 0%{?rhel} <= 8
 cd %{libtelnet}
 %patch150 -p1
 cd ..
-%endif
 %endif
 
 %if 0%{?rhel} <= 7
@@ -340,7 +338,7 @@ guac_extra_ldflags=
 guac_extra_pkgconfig_path=
 guac_extra_libs=
 
-%if 0%{?rhel} <= 6 || 0%{?rhel} >= 8
+%if 0%{?rhel} <= 6
 # libtelnet
 cd %{libtelnet}
 autoreconf -vif

@@ -8,7 +8,7 @@ Depending on the target, this build of guacamole-server links with static builds
 | freerdp             | Source package from Rocky Linux 8   | el6                  |
 | guacamole-server    | Sources from upstream               | el6, el7, el8        |
 | libjpeg-turbo       | Source package from Rocky Linux 8   | el6                  |
-| libtelnet           | Source package from EPEL7           | el6, el8             |
+| libtelnet           | Source package from EPEL7           | el6                  |
 | libvncserver        | Source package from Rocky Linux 8   | el6, el7             |
 | nasm                | Source package from Rocky Linux 8   | el6, el7             |
 
