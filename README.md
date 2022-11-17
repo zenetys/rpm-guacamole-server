@@ -2,15 +2,15 @@ Supported targets: el6, el7, el8
 
 Depending on the target, this build of guacamole-server links with static builds of other components. The goal is to be able to install the package on [RedHat](https://www.redhat.com/) and clones without the need for external RPM repositories others than [EPEL](https://fedoraproject.org/wiki/EPEL).
 
-| Component           | Sources and patches used                      | Used on build for |
-| :-------------------|:----------------------------------------------|:------------------|
-| ffmpeg              | Sources 4.2.5 from upstream                   | el6, el7, el8     |
-| freerdp             | Source package 2.2.0-7 from Rocky Linux 8     | el6               |
-| guacamole-server    | Sources 1.4.0 from upstream                   | el6, el7, el8     |
-| libjpeg-turbo       | Source package 1.5.3-12 from Rocky Linux 8    | el6               |
-| libtelnet           | Source package 0.23-1 from EPEL7              | el6, el8          |
-| libvncserver        | Source package 0.9.11-17 from Rocky Linux 8   | el6, el7          |
-| nasm                | Source package 2.15.03-3 from Rocky Linux 8   | el6, el7          |
+| Component           | Sources and patches used            | Used on build for    |
+| :-------------------|:------------------------------------|:---------------------|
+| ffmpeg              | Sources 4.2.x from upstream         | el6, el7, el8        |
+| freerdp             | Source package from Rocky Linux 8   | el6                  |
+| guacamole-server    | Sources from upstream               | el6, el7, el8        |
+| libjpeg-turbo       | Source package from Rocky Linux 8   | el6                  |
+| libtelnet           | Source package from EPEL7           | el6, el8             |
+| libvncserver        | Source package from Rocky Linux 8   | el6, el7             |
+| nasm                | Source package from Rocky Linux 8   | el6, el7             |
 
 Notes:
   - This RPM spec file creates a single package: guacamole-server14z
