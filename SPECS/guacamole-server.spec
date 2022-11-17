@@ -39,7 +39,7 @@
 
 Name:           guacamole-server14z
 Version:        1.4.0
-Release:        7%{?dist}.zenetys
+Release:        8%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -52,6 +52,10 @@ Source2:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c
 Source3:        https://src.fedoraproject.org/rpms/guacamole-server/raw/889f0f740e44ba6727e0db8b37bb2404fcbbe8ce/f/guacamole-server.init
 Patch1:         guacamole-server-AC_REQUIRE_tap-driver.patch
 Patch2:         guacamole-server-init.patch
+%endif
+
+%if 0%{?rhel} >= 9
+Patch3:         guacamole-server-745-ssh-libssl-dsa-rsa-deprecation.patch
 %endif
 
 %if 0%{?rhel} <= 6
@@ -241,6 +245,9 @@ developing applications that use guacamole-server
 %if 0%{?rhel} <= 6
 %patch1 -p1
 %endif
+%if 0%{?rhel} >= 9
+%patch3 -p1
+%endif
 
 %if 0%{?rhel} <= 6
 # libtelnet
@@ -361,25 +368,32 @@ cd ..
 
 # ffmpeg
 cd %{ffmpeg}
-./configure \
-    --prefix=$PWD/build \
-    --arch='%{_target_cpu}' \
-    --disable-all \
-    --enable-avcodec \
-    --enable-avfilter \
-    --enable-avformat \
-    --enable-encoder=rawvideo,mpeg4 \
-    --enable-ffmpeg \
-    --enable-filter=scale \
-    --enable-gpl \
-    --enable-muxer=rawvideo,mov,mp4,m4v \
-    --enable-pic \
-    --enable-protocol=file \
-    --enable-small \
-    --enable-static \
-    --enable-swresample \
-    --enable-swscale \
+
+ffmpeg_configure_opts=(
+    --prefix=$PWD/build
+    --arch='%{_target_cpu}'
+    --disable-all
+    --enable-avcodec
+    --enable-avfilter
+    --enable-avformat
+    --enable-encoder=rawvideo,mpeg4
+    --enable-ffmpeg
+    --enable-filter=scale
+    --enable-gpl
+    --enable-muxer=rawvideo,mov,mp4,m4v
+    --enable-pic
+    --enable-protocol=file
+    --enable-small
+    --enable-static
+    --enable-swresample
+    --enable-swscale
     --x86asmexe="$AS"
+)
+%if 0%{?rhel} >= 9
+ffmpeg_configure_opts+=( --enable-lto )
+%endif
+
+./configure "${ffmpeg_configure_opts[@]}"
 %make_build
 make install
 guac_extra_pkgconfig_path+=":$PWD/build/lib/pkgconfig"
