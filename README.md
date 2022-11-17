@@ -15,7 +15,7 @@ Depending on the target, this build of guacamole-server links with static builds
 Notes:
   - This RPM spec file creates a single package: guacamole-server14z
   - The package can be built easily using the script `rpmbuild-docker` provided in this repository. In order to use this script, _**a functional Docker environment is needed**_, with ability to pull CentOS (el6, el7) or Rocky Linux (el8) images from internet if not already downloaded.
-  - Support for Kubernetes in guacd is only included in el7 builds. It requires to link with libwebsockets which is currently only available in EPEL7. Since we did not need Kubernetes support for our tests we did not push to support it for other versions.
+  - Support for Kubernetes in guacd is not included in el6 build.
 
 How to build?
 ```

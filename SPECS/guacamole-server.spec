@@ -145,10 +145,10 @@ BuildRequires:  pkgconfig(freerdp-client2)
 BuildRequires:  pkgconfig(winpr2)
 %endif
 
-%if 0%{?rhel} == 7
-BuildRequires:  libwebsockets-devel
+%if 0%{?rhel} >= 7
 BuildRequires:  lzo-devel
 BuildRequires:  pkgconfig(libtelnet)
+BuildRequires:  pkgconfig(libwebsockets)
 %endif
 
 %if 0%{?rhel} <= 6
@@ -196,7 +196,7 @@ Requires:       freerdp-libs >= 2.1.1
 
 Provides:       guacd
 Provides:       libguac
-%if 0%{?rhel} == 7
+%if 0%{?rhel} >= 7
 Provides:       libguac-client-kubernetes
 %endif
 Provides:       libguac-client-rdp
@@ -206,7 +206,7 @@ Provides:       libguac-client-vnc
 
 Obsoletes:      guacd
 Obsoletes:      libguac
-%if 0%{?rhel} == 7
+%if 0%{?rhel} >= 7
 Obsoletes:      libguac-client-kubernetes
 %endif
 Obsoletes:      libguac-client-rdp
@@ -573,7 +573,7 @@ fi
 
 # The libguac source code dlopen's these plugins, and they are named without
 # the version in the shared object; i.e. "libguac-client-$(PROTOCOL).so".
-%if 0%{?rhel} == 7
+%if 0%{?rhel} >= 7
 %{_libdir}/libguac-client-kubernetes.so
 %{_libdir}/libguac-client-kubernetes.so.*
 %endif
