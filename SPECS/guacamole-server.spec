@@ -27,7 +27,7 @@
 %if 0%{?rhel} <= 6
 %define freerdp_version     2.2.0
 %define freerdp             FreeRDP-%{freerdp_version}
-%define freerdp_patch_url   https://git.rockylinux.org/staging/rpms/freerdp/-/raw/imports/r8/freerdp-%{freerdp_version}-7.el8_5/SOURCES
+%define freerdp_patch_url   https://git.rockylinux.org/staging/rpms/freerdp/-/raw/imports/r8/freerdp-%{freerdp_version}-8.el8/SOURCES
 
 %define libjpeg_version     1.5.3
 %define libjpeg             libjpeg-turbo-%{libjpeg_version}
@@ -39,7 +39,7 @@
 
 Name:           guacamole-server14z
 Version:        1.4.0
-Release:        6%{?dist}.zenetys
+Release:        7%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -72,6 +72,7 @@ Patch320:       %freerdp_patch_url/6741.patch#/freerdp-6741.patch
 Patch321:       %freerdp_patch_url/Add-checks-for-bitmap-and-glyph-width-heigth-values.patch#/freerdp-Add-checks-for-bitmap-and-glyph-width-heigth-values.patch
 Patch322:       %freerdp_patch_url/Implement-missing-TSG-debug-functions.patch#/freerdp-Implement-missing-TSG-debug-functions.patch
 Patch323:       %freerdp_patch_url/Refactored-RPC-gateway-parser.patch#/freerdp-Refactored-RPC-gateway-parser.patch
+Patch324:       %freerdp_patch_url/Fix-monitor-list-flag-being-ignored-on-X11-Wayland.patch#/freerdp-Fix-monitor-list-flag-being-ignored-on-X11-Wayland.patch
 
 Source350:      https://downloads.sourceforge.net/libjpeg-turbo/%{libjpeg}.tar.gz
 Patch350:       %libjpeg_patch_url/libjpeg-turbo14-noinst.patch#/libjpeg-turbo-noinst.patch
@@ -273,6 +274,7 @@ cd %{freerdp}
 %patch321 -p1
 %patch322 -p1
 %patch323 -p1
+%patch324 -p1
 cd ..
 # libjpeg
 %setup -T -D -a 350 -n guacamole-server-%{version}
