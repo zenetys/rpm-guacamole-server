@@ -1,7 +1,4 @@
 ffmpeg-4.2 4.2.8 lynx https://www.ffmpeg.org/releases ffmpeg-(4\.2\.[0-9.]+)
-freerdp 2.2.0-8.el8 lynx https://download.rockylinux.org/pub/rocky/8/AppStream/x86_64/os/Packages/f/ freerdp-([0-9].*)\.x86_64.*
-guacamole-server 1.4.0 json https://api.github.com/repos/apache/guacamole-server/tags =([0-9.]+)
-libjpeg-turbo 1.5.3-12.el8 lynx https://download.rockylinux.org/pub/rocky/8/AppStream/x86_64/os/Packages/l/ libjpeg-turbo-([0-9].*)\.x86_64.*
-libtelnet 0.23-1.el7 lynx https://dl.fedoraproject.org/pub/epel/7/source/tree/Packages/l/ libtelnet-([0-9].*)\.src
+guacamole-server 1.5.0 json https://api.github.com/repos/apache/guacamole-server/tags =([0-9.]+)
 libvncserver 0.9.11-17.el8 lynx https://download.rockylinux.org/pub/rocky/8/AppStream/x86_64/os/Packages/l/ libvncserver-([0-9].*)\.x86_64.*
 nasm 2.15.03-3.el8 lynx https://download.rockylinux.org/pub/rocky/8/PowerTools/x86_64/os/Packages/n/ nasm-([0-9].*)\.x86_64.*
