@@ -25,7 +25,7 @@
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
 Name:           guacamole-server15z
-Version:        1.5.0
+Version:        1.5.1
 Release:        1%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
