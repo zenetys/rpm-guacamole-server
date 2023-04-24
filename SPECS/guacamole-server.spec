@@ -21,12 +21,12 @@
 %define libvnc_patch_url    https://git.rockylinux.org/staging/rpms/libvncserver/-/raw/imports/r8/libvncserver-%{libvnc_version}-17.el8/SOURCES
 %endif
 
-%define ffmpeg_version      4.2.8
+%define ffmpeg_version      4.2.9
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
 Name:           guacamole-server15z
 Version:        1.5.1
-Release:        1%{?dist}.zenetys
+Release:        2%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
