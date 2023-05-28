@@ -1,4 +1,4 @@
 ffmpeg-4.2 4.2.9 lynx https://www.ffmpeg.org/releases ffmpeg-(4\.2\.[0-9.]+)
-guacamole-server 1.5.1 json https://api.github.com/repos/apache/guacamole-server/tags =([0-9.]+)
+guacamole-server 1.5.2 json https://api.github.com/repos/apache/guacamole-server/tags =([0-9.]+)
 libvncserver 0.9.11-17.el8 lynx https://download.rockylinux.org/pub/rocky/8/AppStream/x86_64/os/Packages/l/ libvncserver-([0-9].*)\.x86_64.*
 nasm 2.15.03-3.el8 lynx https://download.rockylinux.org/pub/rocky/8/PowerTools/x86_64/os/Packages/n/ nasm-([0-9].*)\.x86_64.*

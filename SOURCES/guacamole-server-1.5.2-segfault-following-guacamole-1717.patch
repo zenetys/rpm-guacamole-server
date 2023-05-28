@@ -1,0 +1,46 @@
+From b0b60c13cc6621831519fb651f4124bfa72a6172 Mon Sep 17 00:00:00 2001
+From: Julien Thomas <jthomas@zenetys.com>
+Date: Sun, 28 May 2023 21:38:48 +0200
+Subject: [PATCH] BUG/MAJOR: Fix potential segfault following GUACAMOLE-1717
+ changes
+
+We experienced a segfault when connecting in RDP on some w2016 and w10
+hosts. The issue is related to the changes made for GUACAMOLE-1717.
+
+It was introduced in commit 4fca7a6d "GUACAMOLE-1717: Fix RDP cursor
+use of uninitialized memory".
+
+The cause of the segfault is not the removal of the condition:
+if (pointer->andMaskData && pointer->xorMaskData)
+    freerdp_image_copy_from_pointer_data(...
+
+Reverting from _aligned_recalloc() to _aligned_malloc() fixes the
+issue. It turns out that _aligned_recalloc from libwinpr is broken in
+el8 (freerdp 2.2.0), and most likely in el7 as well (freerdp 2.1.1).
+
+FreeRDP fix was merged after 2.2.0 release, it is present in 2.3.0.
+Commit is cad1dd3 "Fixed _aligned_recalloc":
+https://github.com/FreeRDP/FreeRDP/commit/cad1dd39e23f45b36e4815129bdc3d99fcbd8c2b
+
+This patch reverts GUACAMOLE-1717 change, to use back _aligned_malloc()
+instead of _aligned_recalloc(). It should be included in el7, el8 builds.
+---
+ src/protocols/rdp/pointer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/protocols/rdp/pointer.c b/src/protocols/rdp/pointer.c
+index ae167cf6..8c024b71 100644
+--- a/src/protocols/rdp/pointer.c
++++ b/src/protocols/rdp/pointer.c
+@@ -42,7 +42,7 @@ BOOL guac_rdp_pointer_new(rdpContext* context, rdpPointer* pointer) {
+             rdp_client->display, pointer->width, pointer->height);
+ 
+     /* Allocate data for image */
+-    unsigned char* data = _aligned_recalloc(NULL, 1, pointer->width * pointer->height * 4, 16);
++    unsigned char* data = _aligned_malloc(pointer->width * pointer->height * 4, 16);
+ 
+     cairo_surface_t* surface;
+ 
+-- 
+2.21.1
+

@@ -25,8 +25,8 @@
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
 Name:           guacamole-server15z
-Version:        1.5.1
-Release:        2%{?dist}.zenetys
+Version:        1.5.2
+Release:        1%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -34,6 +34,10 @@ URL:            http://guac-dev.org/
 Source0:        https://github.com/apache/guacamole-server/archive/%{version}.tar.gz#/guacamole-server-%{version}.tar.gz
 Source1:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c934b7698dc0d7c1b093eafcc6c0718f1/f/guacamole-server.sysconfig
 Source2:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c934b7698dc0d7c1b093eafcc6c0718f1/f/guacamole-server.service
+
+%if 0%{?rhel} <= 8
+Patch1:         guacamole-server-1.5.2-segfault-following-guacamole-1717.patch
+%endif
 
 %if 0%{?rhel} <= 7
 Source200:      https://www.nasm.us/pub/nasm/releasebuilds/%{nasm_version}/%{nasm}.tar.gz
@@ -157,6 +161,9 @@ developing applications that use guacamole-server
 %prep
 # guacamole-server
 %setup -n guacamole-server-%{version}
+%if 0%{?rhel} <= 8
+%patch1 -p1 -b .segfault-guacamole-1717
+%endif
 
 %if 0%{?rhel} <= 7
 # nasm
