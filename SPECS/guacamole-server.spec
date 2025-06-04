@@ -11,7 +11,7 @@
 
 Name:           guacamole-server15z
 Version:        1.5.5
-Release:        2%{?dist}.zenetys
+Release:        3%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
