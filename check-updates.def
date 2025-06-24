@@ -1,2 +1,2 @@
 ffmpeg-4.2 4.2.11 lynx https://www.ffmpeg.org/releases ffmpeg-(4\.2\.[0-9.]+)
-guacamole-server 1.5.5 json https://api.github.com/repos/apache/guacamole-server/tags =([0-9.]+)
+guacamole-server 1.6.0 json https://api.github.com/repos/apache/guacamole-server/tags =([0-9.]+)

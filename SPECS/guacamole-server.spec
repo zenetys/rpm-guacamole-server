@@ -1,5 +1,5 @@
 # Supported targets: el8, el9
-# Replace distro package with: dnf install guacamole-server15z --allowerasing
+# Replace distro package with: dnf install guacamole-server16z --allowerasing
 
 %if ! 0%{?make_build:1}
 %define make_build %{__make} %{?_smp_mflags}
@@ -10,9 +10,9 @@
 %define ffmpeg_version      4.2.10
 %define ffmpeg              ffmpeg-%{ffmpeg_version}
 
-Name:           guacamole-server15z
-Version:        1.5.5
-Release:        4%{?dist}.zenetys
+Name:           guacamole-server16z
+Version:        1.6.0
+Release:        1%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -20,6 +20,7 @@ URL:            http://guac-dev.org/
 Source0:        https://github.com/apache/guacamole-server/archive/%{version}.tar.gz#/guacamole-server-%{version}.tar.gz
 Source1:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c934b7698dc0d7c1b093eafcc6c0718f1/f/guacamole-server.sysconfig
 Source2:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c934b7698dc0d7c1b093eafcc6c0718f1/f/guacamole-server.service
+Patch0:         https://github.com/apache/guacamole-server/commit/2e2a33621d673345e7b9d22c9388be80c6d77598.patch#/guacamole-1.6.0-GUACAMOLE-2070-Correct-usage-of-struct-sockaddr_in-s.patch
 
 Source260:      https://ffmpeg.org/releases/%{ffmpeg}.tar.bz2
 Patch261:       https://pkgs.rpmfusion.org/cgit/free/ffmpeg.git/plain/fix_ppc_build.patch?h=el8&id=4604cc7aed7b3fa49f50a7f7cdf35814d17c988e#/ffmpeg-fix_ppc_build.patch
@@ -108,6 +109,7 @@ developing applications that use guacamole-server
 %prep
 # guacamole-server
 %setup -n guacamole-server-%{version}
+%patch0 -p1
 
 # ffmpeg
 %setup -T -D -a 260 -n guacamole-server-%{version}

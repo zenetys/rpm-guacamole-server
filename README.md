@@ -1,6 +1,6 @@
 | <nobr>Package name</nobr> | <nobr>Supported targets</nobr> |
 | :--- | :--- |
-| guacamole-server15z | el8, el9 |
+| guacamole-server16z | el8, el9 |
 <br/>
 
 Depending on the target, this build of guacamole-server links with static
