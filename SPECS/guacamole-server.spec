@@ -22,7 +22,7 @@ Source1:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c
 Source2:        https://src.fedoraproject.org/rpms/guacamole-server/raw/5b6baa5c934b7698dc0d7c1b093eafcc6c0718f1/f/guacamole-server.service
 
 Source260:      https://ffmpeg.org/releases/%{ffmpeg}.tar.bz2
-Patch261:       https://pkgs.rpmfusion.org/cgit/free/ffmpeg.git/plain/fix_ppc_build.patch?h=el8&id=4604cc7aed7b3fa49f50a7f7cdf35814d17c988e#/ffmpeg-fix_ppc_build.patch
+Patch261:       https://raw.githubusercontent.com/rpmfusion/ffmpeg/4604cc7aed7b3fa49f50a7f7cdf35814d17c988e/fix_ppc_build.patch#/ffmpeg-fix_ppc_build.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
