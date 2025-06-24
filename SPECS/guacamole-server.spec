@@ -1,4 +1,5 @@
 # Supported targets: el8, el9
+# Replace distro package with: dnf install guacamole-server15z --allowerasing
 
 %if ! 0%{?make_build:1}
 %define make_build %{__make} %{?_smp_mflags}
@@ -11,7 +12,7 @@
 
 Name:           guacamole-server15z
 Version:        1.5.5
-Release:        3%{?dist}.zenetys
+Release:        4%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -67,20 +68,19 @@ Requires:       dejavu-sans-mono-fonts
 Requires:       freerdp-libs >= 2:2.2.0
 
 Provides:       guacd
+Conflicts:      guacd
 Provides:       libguac
+Conflicts:      libguac
 Provides:       libguac-client-kubernetes
+Conflicts:      libguac-client-kubernetes
 Provides:       libguac-client-rdp
+Conflicts:      libguac-client-rdp
 Provides:       libguac-client-ssh
+Conflicts:      libguac-client-ssh
 Provides:       libguac-client-telnet
+Conflicts:      libguac-client-telnet
 Provides:       libguac-client-vnc
-
-Obsoletes:      guacd
-Obsoletes:      libguac
-Obsoletes:      libguac-client-kubernetes
-Obsoletes:      libguac-client-rdp
-Obsoletes:      libguac-client-ssh
-Obsoletes:      libguac-client-telnet
-Obsoletes:      libguac-client-vnc
+Conflicts:      libguac-client-vnc
 
 %description
 Guacamole is an HTML5 remote desktop gateway.
@@ -97,7 +97,9 @@ The main web application is provided by the "guacamole-client" package.
 %package -n %{name}-devel
 Summary:        Development files for guacamole-server
 Requires:       libguac%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+
 Provides:       libguac-devel%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Conflicts:      libguac-devel
 
 %description -n %{name}-devel
 The libguac-devel package contains libraries and header files for
