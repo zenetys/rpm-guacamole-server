@@ -1,4 +1,4 @@
-# Supported targets: el7, el8, el9
+# Supported targets: el8, el9
 
 %if ! 0%{?make_build:1}
 %define make_build %{__make} %{?_smp_mflags}
