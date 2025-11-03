@@ -304,19 +304,27 @@ function dockerfile_for_dist() {
 # normal dockerfile method may work with recent distro/docker
 DOCKER_OPTS_DIST_el9=( --security-opt seccomp=unconfined )
 function dockerscript_for_dist_el9() {
-    IMAGE=$1; shift
-    echo "# Build $IMAGE..."
-    set -xe
-    id=$(docker run "$@" -d rockylinux:9 sleep infinity)
-    docker exec "$id" dnf update -y
-    docker exec "$id" dnf install -y createrepo gcc make rpm-build
-    docker exec "$id" sh -c "echo '* - nproc 2048' >> /etc/security/limits.d/90-nproc.conf"
-    docker exec "$id" sh -c "echo keepcache=1 >> /etc/dnf/dnf.conf"
-    docker exec "$id" sh -c $'awk \x27/^\[/ { inside=$1 } inside=="[crb]"&&/enabled/{print "enabled=1"; next}{print}\x27 /etc/yum.repos.d/rocky.repo > /etc/yum.repos.d/rocky.repo.new && mv /etc/yum.repos.d/rocky.repo{.new,}'
-    docker exec "$id" dnf clean all
-    docker container commit "$id" "$IMAGE"
-    docker kill "$id"
-    docker rm "$id"
+  IMAGE=$1; shift
+  echo "# Build $IMAGE..."
+  set -xe
+  id=$(docker run "$@" -d ${DOCKER_HUB_IMAGE:-rockylinux:9} sleep infinity)
+  docker exec "$id" dnf update -y
+  docker exec "$id" dnf install -y createrepo gcc make rpm-build
+  docker exec "$id" sh -c "echo '* - nproc 2048' >> /etc/security/limits.d/90-nproc.conf"
+  docker exec "$id" sh -c "echo keepcache=1 >> /etc/dnf/dnf.conf"
+  docker exec "$id" sh -c $'awk \x27/^\[/ { inside=$1 } inside=="[crb]"&&/enabled/{print "enabled=1"; next}{print}\x27 /etc/yum.repos.d/rocky.repo > /etc/yum.repos.d/rocky.repo.new && mv /etc/yum.repos.d/rocky.repo{.new,}'
+  docker exec "$id" dnf clean all
+  docker container commit "$id" "$IMAGE"
+  docker kill "$id"
+  docker rm "$id"
+}
+
+# normal dockerfile method may work with recent distro/docker
+DOCKER_OPTS_DIST_el10=( --security-opt seccomp=unconfined )
+DOCKERSCRIPT_ENV_for_el10=$(declare -f dockerscript_for_dist_el9)
+function dockerscript_for_dist_el10() {
+  DOCKER_HUB_IMAGE='rockylinux/rockylinux:10' \
+    dockerscript_for_dist_el9 "$@"
 }
 
 # Lookup docker script source to build a base image for $DIST.
@@ -324,6 +332,8 @@ function dockerscript_for_dist() {
   if [[ -f ~/.config/${0##*/}/build-image.$DIST ]]; then
     cat ~/.config/"${0##*/}/build-image.$DIST"
   elif declare -f "dockerscript_for_dist_$DIST"; then
+    local env_ref="DOCKERSCRIPT_ENV_for_$DIST"
+    [[ -n ${!env_ref} ]] && echo "$DOCKERSCRIPT_ENV_for_el10"
     echo "'dockerscript_for_dist_$DIST' \"\$@\""
   else
     return 1
@@ -487,6 +497,9 @@ function build_main() {
   chown "$BUSER:$BGROUP" "$BHOME"
 
   if [[ -n $SIGN ]]; then
+    signreq=()
+    for i in rpm-sign gnupg2; do rpm -q "$i" || signreq+=( "$i" ); done
+    [[ -n $signreq ]] && yum install -y "${signreq[@]}"
     build_runuser mkdir -m 700 /dev/shm/g
     build_runuser ln -sT /dev/shm/g "$BHOME/.gnupg"
     build_runuser sh -exc 'GPG_TTY= gpg --passphrase-file /dev/shm/.p \
@@ -547,7 +560,6 @@ EOF
   build_runuser rpmbuild "${rpmbuildopts[@]}" -ba "/tmp/$SPECFILE"
 
   if [[ -n $SIGN ]]; then
-    rpm -q rpm-sign || yum install -y rpm-sign
     rpms=( $(find /tmp/build/{RPMS,SRPMS} -type f -name '*.rpm') )
     if [[ -n $rpms ]]; then
       build_runuser sh -exc 'GPG_TTY= rpm \
