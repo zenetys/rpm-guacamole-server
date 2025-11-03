@@ -176,6 +176,7 @@ autoreconf -vif
     --with-freerdp-plugin-dir="%{_libdir}/freerdp2" \
     --disable-silent-rules \
     --disable-static
+
 %make_build
 
 cd doc/libguac
@@ -204,7 +205,6 @@ install -p -m 644 -D %{SOURCE2} %{buildroot}%{_unitdir}/guacd.service
 getent group %username >/dev/null || groupadd -r %username &>/dev/null || :
 getent passwd %username >/dev/null || useradd -r -s /sbin/nologin \
     -d %{_sharedstatedir}/guacd -M -c 'Guacamole proxy daemon' -g %username %username &>/dev/null || :
-exit 0
 
 %post
 /sbin/ldconfig
@@ -237,7 +237,6 @@ exit 0
 %{_libdir}/libguac-terminal.so
 %{_libdir}/libguac-terminal.so.*
 
-# attr set here, see note about el7 at the end of the install section
 %attr(755,-,-) %{_bindir}/guacenc
 
 %{_bindir}/guaclog
