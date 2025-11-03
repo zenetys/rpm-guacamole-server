@@ -1,5 +1,7 @@
-# Supported targets: el8, el9
+# Supported targets: el8, el9, el10
 # Replace distro package with: dnf install guacamole-server16z --allowerasing
+
+%global source_date_epoch_from_changelog 0
 
 %if ! 0%{?make_build:1}
 %define make_build %{__make} %{?_smp_mflags}
@@ -12,7 +14,7 @@
 
 Name:           guacamole-server16z
 Version:        1.6.0
-Release:        2%{?dist}.zenetys
+Release:        3%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -109,12 +111,12 @@ developing applications that use guacamole-server
 %prep
 # guacamole-server
 %setup -n guacamole-server-%{version}
-%patch0 -p1
+%patch -P 0 -p1
 
 # ffmpeg
 %setup -T -D -a 260 -n guacamole-server-%{version}
 cd %{ffmpeg}
-%patch261 -p1
+%patch -P 261 -p1
 cd ..
 
 %build
