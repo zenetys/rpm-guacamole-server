@@ -55,7 +55,7 @@ BuildRequires:  pkgconfig(ossp-uuid)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(vorbis)
 BuildRequires:  pkgconfig(winpr2)
-BuildRequires:  systemd-devel
+BuildRequires:  systemd-rpm-macros
 
 Requires(pre):  shadow-utils
 Requires(post):    systemd
