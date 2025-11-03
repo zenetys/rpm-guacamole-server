@@ -59,7 +59,7 @@ function get-data-tags-from-path() {
     git -C "$tmpdir" checkout "origin/$branch" || return 1
     last_hash=$(git -C "$tmpdir" log -1 --pretty=format:%H -- connectors/vmware/) || return 1
     [[ -n $last_hash ]] || return 1
-    git -C "$tmpdir" tag --contains "$last_hash"
+    git -C "$tmpdir" tag --contains "$last_hash" |sort -V |head -n 1
 }
 
 function get-data() {
@@ -147,8 +147,14 @@ function check-updates() {
     [[ $VERBOSE ]] &&
        echo "[DEBUG] $current ? ${ordered[0]} < ${ordered[1]}" >&2
     if [[ ${ordered[1]} != $current ]]; then
-      echo "** $base ($current) need update to $version **"
-      return 1
+      if [[ $FILENAME ]] &&
+         (echo "$base $version" |grep -qFx -f <(sed -nre 's,^#ignore ([^ ]+) ([^/].*),\1 \2,p' "$FILENAME") ||
+          echo "$base $version" |grep -qEx -f <(sed -nre 's,^#ignore ([^ ]+) /([^/]*)/,\1 \2,p' "$FILENAME")); then
+        if [[ $VERBOSE ]]; then echo "[DEBUG] ignored version: $version" >&2; fi
+      else
+        echo "** $base ($current) need update to $version **"
+        return 1
+      fi
     fi
   fi
 }
