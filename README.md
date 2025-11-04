@@ -8,6 +8,11 @@ builds of other components. The goal is to be able to install the package
 on [RedHat](https://www.redhat.com/) and clones without the need for
 external RPM repositories others than [EPEL](https://fedoraproject.org/wiki/EPEL).
 
+Since el9, ffmpeg(-free) is available in EPEL, it would allow to build
+guacenc just fine. However it would also bring tons of useless dependencies
+for a server, thus we stick to guacenc being statically linked with a
+custom build of ffmpeg libs.
+
 | Component           | Sources and patches used            | Used on build for    |
 | :-------------------|:------------------------------------|:---------------------|
 | ffmpeg              | Sources 4.2.x from upstream         | el8, el9             |
