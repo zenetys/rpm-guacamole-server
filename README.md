@@ -19,6 +19,12 @@ custom build of ffmpeg libs.
 | guacamole-server    | Sources from upstream               | el8, el9, el10       |
 <br/>
 
+> [!NOTE]
+> Starting from el10, the guacd RDP client library is linked against libfreerdp3
+> (FreeRDP 3.x), instead of libfreerdp2 (FreeRDP 2.x) on previous versions of the
+> distro.
+<br/>
+
 ## Build:
 
 The package can be built easily using the rpmbuild-docker script provided

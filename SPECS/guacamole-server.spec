@@ -14,7 +14,7 @@
 
 Name:           guacamole-server16z
 Version:        1.6.0
-Release:        3%{?dist}.zenetys
+Release:        4%{?dist}.zenetys
 Summary:        Server-side native components that form the Guacamole proxy
 License:        ASL 2.0
 URL:            http://guac-dev.org/
@@ -37,8 +37,15 @@ BuildRequires:  libtool
 BuildRequires:  lzo-devel
 BuildRequires:  make
 BuildRequires:  pkgconfig(cairo)
+%if 0%{?rhel} <= 9
 BuildRequires:  pkgconfig(freerdp2)
 BuildRequires:  pkgconfig(freerdp-client2)
+BuildRequires:  pkgconfig(winpr2)
+%else
+BuildRequires:  pkgconfig(freerdp3)
+BuildRequires:  pkgconfig(freerdp-client3)
+BuildRequires:  pkgconfig(winpr3)
+%endif
 BuildRequires:  pkgconfig(gnutls)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libpulse)
@@ -56,7 +63,6 @@ BuildRequires:  pkgconfig(libwebsockets)
 BuildRequires:  pkgconfig(ossp-uuid)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(vorbis)
-BuildRequires:  pkgconfig(winpr2)
 BuildRequires:  systemd-rpm-macros
 
 Requires(pre):  shadow-utils
@@ -66,9 +72,11 @@ Requires(postun):  systemd
 
 Requires:       dejavu-sans-mono-fonts
 
+%if 0%{?rhel} <= 9
 # Make sure freerdp is up-to-date to avoid
 # undefined symbol issues
 Requires:       freerdp-libs >= 2:2.2.0
+%endif
 
 Provides:       guacd
 Conflicts:      guacd
@@ -175,7 +183,11 @@ export LIBS="$guac_extra_libs"
 
 autoreconf -vif
 %configure \
+%if 0%{?rhel} <= 9
     --with-freerdp-plugin-dir="%{_libdir}/freerdp2" \
+%else
+    --with-freerdp-plugin-dir="%{_libdir}/freerdp3" \
+%endif
     --disable-silent-rules \
     --disable-static
 
@@ -229,7 +241,11 @@ getent passwd %username >/dev/null || useradd -r -s /sbin/nologin \
 %{_libdir}/libguac-client-kubernetes.so.*
 %{_libdir}/libguac-client-rdp.so
 %{_libdir}/libguac-client-rdp.so.*
+%if 0%{?rhel} <= 9
 %{_libdir}/freerdp2/*.so
+%else
+%{_libdir}/freerdp3/*.so
+%endif
 %{_libdir}/libguac-client-ssh.so
 %{_libdir}/libguac-client-ssh.so.*
 %{_libdir}/libguac-client-telnet.so
